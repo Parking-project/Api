@@ -1,5 +1,5 @@
 from extensions.databse_extension import Base
-from ..Interface import IWPAuthHistory
+from ..interface import IWPAuthHistory
 
 class WPAuthHistory(Base, IWPAuthHistory):
     def __init__(self, **kwargs):

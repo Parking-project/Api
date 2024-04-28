@@ -1,14 +1,7 @@
-from sqlalchemy import Column, String, Integer
-from abc import ABC, abstractmethod
+from extensions.databse_extension import Base
+from ..interface import IWPReserveHistory
 
-class IWPReserveHistory(ABC):
-    __tablename__ = 'wp_reserve_history'
-
-    ID = Column(String(36), primary_key=True)
-    reserve_id = Column(String(36), nullable=False)
-    reserve_state = Column(Integer, nullable=False, default=0)
-
+class WPReserveHistory(IWPReserveHistory):
     @classmethod
-    @abstractmethod
     def get(cls):
         pass

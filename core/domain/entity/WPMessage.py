@@ -1,5 +1,5 @@
 from extensions.databse_extension import Base
-from ..Interface import IWPMessage
+from ..interface import IWPMessage
 
 class WPMessage(Base, IWPMessage):
     def __init__(self, **kwargs):
