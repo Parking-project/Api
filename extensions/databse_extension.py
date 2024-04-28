@@ -2,13 +2,14 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy import BooleanClauseList
 from sqlalchemy.orm import Query
-from config import settings
+
+from config.database_config import DatabaseConfig
 
 Base = declarative_base()
 engine = create_engine(
-    settings.CON_STRING,
+    DatabaseConfig.CON_STRING,
     echo=True,
-    connect_args={'user': settings.USER, 'password': settings.PASS})
+    connect_args={'user': DatabaseConfig.USER, 'password': DatabaseConfig.PASS})
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine, expire_on_commit=False)
 session = Session()
