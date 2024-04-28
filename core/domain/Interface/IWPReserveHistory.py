@@ -1,7 +1,8 @@
+from extensions.databse_extension import Base
 from sqlalchemy import Column, String, Integer
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
-class IWPReserveHistory(ABC):
+class IWPReserveHistory(Base):
     __tablename__ = 'wp_reserve_history'
 
     ID = Column(String(36), primary_key=True)

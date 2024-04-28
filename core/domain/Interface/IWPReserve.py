@@ -1,8 +1,9 @@
+from extensions.databse_extension import Base
 from sqlalchemy import Column, String, Integer, BigInteger, ForeignKey
-from abc import ABC, abstractmethod
 from ..enum import ReserveStatus
+from abc import abstractmethod
 
-class IWPReserve(ABC):
+class IWPReserve(Base):
     __tablename__ = 'wp_reserve'
 
     ID = Column(String(36), primary_key=True)

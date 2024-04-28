@@ -1,7 +1,6 @@
-from extensions.databse_extension import Base
 from ..interface import IWPDocument
 
-class WPDocument(Base, IWPDocument):
+class WPDocument(IWPDocument):
     def __init__(self, **kwargs):
         pass
 

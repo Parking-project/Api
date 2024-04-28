@@ -1,8 +1,9 @@
+from extensions.databse_extension import Base
 from sqlalchemy import Column, String, BigInteger, Text, Integer, ForeignKey
 from datetime import datetime
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
-class IWPMessage(ABC):
+class IWPMessage(Base):
     __tablename__ = 'wp_message'
 
     ID = Column(String(36), primary_key=True)

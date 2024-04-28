@@ -1,7 +1,7 @@
-from extensions.databse_extension import Base
 from ..interface import IWPPlace
+from extensions.databse_extension import sql_query
 
-class WPPlace(IWPPlace):
+class WPPlace(IWPPlace):    
     def __init__(self, **kwargs):
         pass
 
@@ -13,7 +13,7 @@ class WPPlace(IWPPlace):
 
     @classmethod
     def get_place_code(cls, place_code: str):
-        pass
+        return sql_query(WPPlace, (WPPlace.place_code == place_code))
 
     @classmethod
     def get_free(cls, hours: int):

@@ -1,7 +1,8 @@
+from extensions.databse_extension import Base
 from sqlalchemy import Column, String
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
-class IWPRole(ABC):
+class IWPRole(Base):
     __tablename__ = 'wp_role'
 
     ID = Column(String(36), primary_key=True)

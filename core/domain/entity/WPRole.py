@@ -1,4 +1,3 @@
-from extensions.databse_extension import Base
 from ..interface import IWPRole
 
 class WPRole(IWPRole):

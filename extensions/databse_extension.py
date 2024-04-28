@@ -7,13 +7,17 @@ from config.database_config import DatabaseConfig
 
 Base = declarative_base()
 engine = create_engine(
-    DatabaseConfig.CON_STRING,
+    url=DatabaseConfig.CON_STRING,
     echo=True,
-    connect_args={'user': DatabaseConfig.USER, 'password': DatabaseConfig.PASS})
+    connect_args=
+        {
+            'user': DatabaseConfig.USER,
+            'password': DatabaseConfig.PASS
+        }
+    )
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine, expire_on_commit=False)
 session = Session()
-
 
 def sql_commit():
     session.commit()

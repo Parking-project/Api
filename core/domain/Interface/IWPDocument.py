@@ -1,8 +1,9 @@
+from extensions.databse_extension import Base
 from sqlalchemy import Column, String, Text, BigInteger, ForeignKey
 from sqlalchemy.orm import relationship
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
-class IWPDocument(ABC):
+class IWPDocument(Base):
     __tablename__ = 'wp_document'
 
     ID = Column(String(36), primary_key=True)

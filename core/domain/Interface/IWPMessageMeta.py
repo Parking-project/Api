@@ -1,8 +1,9 @@
+from extensions.databse_extension import Base
 from sqlalchemy import Column, String, Text, ForeignKey
 from sqlalchemy.orm import relationship
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
-class IWPMessageMeta(ABC):
+class IWPMessageMeta(Base):
     __tablename__ = 'wp_messagemeta'
 
     ID = Column(String(36), primary_key=True)

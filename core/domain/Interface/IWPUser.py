@@ -1,8 +1,9 @@
+from extensions.databse_extension import Base
 from sqlalchemy import Column, String, ForeignKey, BigInteger
 from datetime import datetime
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
-class IWPUser(ABC):
+class IWPUser(Base):
     __tablename__ = 'wp_user'
 
     ID = Column(String(36), primary_key=True)

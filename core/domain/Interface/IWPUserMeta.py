@@ -1,8 +1,9 @@
-from sqlalchemy import Column, String, ForeignKey, Text
+from extensions.databse_extension import Base
 from sqlalchemy.orm import relationship
-from abc import ABC, abstractmethod
+from sqlalchemy import Column, String, ForeignKey, Text
+from abc import abstractmethod
 
-class IWPUserMeta(ABC):
+class IWPUserMeta(Base):
     __tablename__ = 'wp_usermeta'
 
     ID = Column(String(36), primary_key=True)

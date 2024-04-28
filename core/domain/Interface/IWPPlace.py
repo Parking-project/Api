@@ -1,8 +1,8 @@
+from extensions.databse_extension import Base
 from sqlalchemy import Column, String, Boolean
-from sqlalchemy.orm import relationship
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
-class IWPPlace(ABC):
+class IWPPlace(Base):
     __tablename__ = 'wp_place'
 
     ID = Column(String(36), primary_key=True)

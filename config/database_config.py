@@ -1,6 +1,8 @@
 """Flask config class."""
 import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 class DatabaseConfig:
     CON_STRING: str = os.getenv('CON_STRING')

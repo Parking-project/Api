@@ -1,8 +1,9 @@
+from extensions.databse_extension import Base
 from sqlalchemy import Column, String, BigInteger, ForeignKey
 from datetime import datetime
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
-class IWPAuthHistory(ABC):
+class IWPAuthHistory(Base):
     __tablename__ = 'wp_auth_history'
 
     ID = Column(String(36), primary_key=True)
