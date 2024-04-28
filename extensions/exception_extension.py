@@ -1,3 +1,4 @@
+from flask import Flask
 from werkzeug.exceptions import HTTPException
 
 def register_exception_handler(app: Flask):
