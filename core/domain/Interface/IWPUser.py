@@ -50,8 +50,3 @@ class IWPUser(Base):
     @abstractmethod
     def get_login(cls, login: str):
         pass
-    
-    @classmethod
-    @abstractmethod
-    def get_telegram_id(cls, telegram_id: int):
-        pass

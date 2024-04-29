@@ -23,10 +23,15 @@ class IWPPlace(Base):
 
     @classmethod
     @abstractmethod
+    def get_place_prefix(cls, place_prefix: str, page_index, page_size):
+        pass
+
+    @classmethod
+    @abstractmethod
     def get_place_code(cls, place_code: str):
         pass
 
     @classmethod
     @abstractmethod
-    def get_free(cls, hours: int):
+    def get_free(cls, hours: int, page_index, page_size):
         pass

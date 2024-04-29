@@ -29,5 +29,15 @@ class IWPMessageMeta(Base):
 
     @classmethod
     @abstractmethod
-    def get_message_bot_id(cls, message_bot_id: int):
+    def get_tg_bot_id(cls, tg_bot_id: int):
+        pass
+
+    @classmethod
+    @abstractmethod
+    def get_tg_id(cls, tg_id: int):
+        pass
+
+    @classmethod
+    @abstractmethod
+    def get_tg_user_id(cls, tg_user_id: int):
         pass

@@ -11,5 +11,5 @@ class IWPReserveHistory(Base):
 
     @classmethod
     @abstractmethod
-    def get(cls):
+    def get(cls, page_index, page_size):
         pass
