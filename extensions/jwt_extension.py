@@ -2,7 +2,7 @@ from flask import jsonify
 from flask_jwt_extended import JWTManager
 from core.domain.entity.WPTokenBlocList import WPTokenBlocList
 
-def register_jwt_options(jwt: JWTManager):
+def register_jwt(jwt: JWTManager):
     @jwt.expired_token_loader
     def expired_token_callback(jwt_header, jwt_data):
         return jsonify(
