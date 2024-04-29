@@ -1,11 +1,12 @@
-from application import create_app
+# from application import create_app
 
-app, jwt = create_app()
-def main():
-    app.run(debug=True, port=9098, host="localhost")
+# app, jwt = create_app()
+# def main():
+#     app.run(debug=True, port=9098, host="localhost")
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
+
 
 
 # class User():
@@ -19,17 +20,18 @@ if __name__ == '__main__':
 #     #     self.name = "NONE"
 #     #     self.username = username
 
-# import json
-# j = json.loads(
-# """
-# {
-# "username": "jhon"
-# }
-# """)
-# try:
-#     u = User(**j)
+import json
 
-#     print(j.get("username"))
-#     print(u.name, "  ", u.username)
-# except Exception as ex:
-#     print(ex)
+def add_element(j, name, value):
+    j[name] = value
+
+j1 = json.loads(
+"""
+{
+"username": "jhon"
+}
+""")
+
+print(j1)
+add_element(j1, "name", "jhonatan")
+print(j1)

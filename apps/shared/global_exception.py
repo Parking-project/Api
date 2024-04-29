@@ -1,19 +1,22 @@
-from werkzeug.exceptions import (
-    HTTPException,
-    BadRequest,
-    NotFound
-)
+from werkzeug.exceptions import HTTPException
 
 
 class CustomError(HTTPException):
     """ Custom Error Exception """
-    code = 409
-    description = "custom error"
+    code = 401
 
+class UniqueError(CustomError):
+    def __init__(self, name):
+        self.description = f"{name} должен быть уникальным"
 
-class BadRequestError(BadRequest):
-    """ Wrap BadRequest Exception """
+class PageError(CustomError):
+    def __init__(self, reason):
+        self.description = reason
 
+class ConnectionError(CustomError):
+    def __init__(self, sql_act):
+        self.description = f"Соединение было прервано при выполнении метода - {sql_act}"
 
-class NotFoundError(NotFound):
-    """ Wrap NotFound Exception """
+class DataError(CustomError):
+    def __init__(self, reason):
+        self.description = reason

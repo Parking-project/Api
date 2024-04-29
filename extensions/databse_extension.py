@@ -5,6 +5,8 @@ from sqlalchemy.orm import Query
 
 from config.database_config import DatabaseConfig
 
+from apps.shared.global_exception import ConnectionError
+
 Base = declarative_base()
 engine = create_engine(
     url=DatabaseConfig.CON_STRING,
@@ -20,21 +22,33 @@ Session = sessionmaker(bind=engine, expire_on_commit=False)
 session = Session()
 
 def sql_commit():
-    session.commit()
-    session.close()
+    try:
+        session.commit()
+        session.close()
+    except:
+        raise ConnectionError("sql_commit")
 
 # Добавляет запись
 def sql_add(data):
-    session.add(data)
-    sql_commit()
+    try:
+        session.add(data)
+        sql_commit()
+    except:
+        raise ConnectionError("sql_add")
 
 # Удаляет запись
 def sql_delete(data):
-    session.delete(data)
-    sql_commit()
+    try:
+        session.delete(data)
+        sql_commit()
+    except:
+        raise ConnectionError("sql_delete")
 
 # Получения записей
 def sql_query(class_example, filter_condition: BooleanClauseList) -> Query:
-    query_result = session.query(class_example).filter(filter_condition)
-    session.close()
-    return query_result
+    try:
+        query_result = session.query(class_example).filter(filter_condition)
+        session.close()
+        return query_result
+    except:
+        raise ConnectionError("sql_query")

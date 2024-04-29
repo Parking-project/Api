@@ -3,16 +3,16 @@ from core.domain.entity.WPUser import WPUser
 from core.domain.entity.WPTokenBlocList import WPTokenBlocList
 from ...shared.request_models import RequestUser
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt
+from ...shared.global_exception import *
+from ..validators.user_validate import UserValidator
+from ..validators.none_validate import NoneValidator
 
 blueprint = Blueprint('token', __name__, url_prefix="/token")
 
 @blueprint.post('/login')
 def login():
     data = request.get_json()
-    user: WPUser = WPUser.authenticate(
-        data.get("login"), 
-        data.get("password")
-    )
+    user: WPUser = NoneValidator.validate(WPUser.authenticate(**data))
     return jsonify(
         {
             "message": "Авторизация прошла успешно",
@@ -23,26 +23,17 @@ def login():
 @blueprint.post('/register')
 def register():
     data = request.get_json()
-    login: str = data.get("login")
-    if WPUser.get_login(login).count() != 0:
-        raise Exception("Пользователь с таким логином уже существует!")
-    
-    user = WPUser(
-        login=login,
-        password=data.get("password"),
-        name=data.get("display_name")
-    )
-    
-    try:
-        user.save()
-        return jsonify(
-            {
-                "message": "Регистрация прошла успешно",
-                "tokens": user.get_tokens()
-            }
-        ), 200
-    except:
-        raise Exception("Регистрация провалилась!")
+    UserValidator.validate_register(**data)
+    UserValidator.validate_unique(**data)
+        
+    user = WPUser(**data)
+    user.save()
+    return jsonify(
+        {
+            "message": "Регистрация прошла успешно",
+            "tokens": user.get_tokens()
+        }
+    ), 200
 
 @blueprint.get('/refresh')
 @jwt_required(refresh=True)

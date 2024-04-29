@@ -1,6 +1,10 @@
 from ..interface.IWPRole import IWPRole
 from extensions.databse_extension import sql_query, sql_add, sql_commit, sql_delete
 
+ADMIN_NAME = "ADMIN"
+EMPLOYEE_NAME = "EMPLOYEE"
+USER_NAME = "USER"
+
 class WPRole(IWPRole):
     @classmethod
     def get_id(cls, role_id: str):

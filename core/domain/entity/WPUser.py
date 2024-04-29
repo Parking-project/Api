@@ -1,4 +1,5 @@
 from ..interface.IWPUser import IWPUser
+from .WPRole import WPRole, USER_NAME
 from extensions.databse_extension import sql_query, sql_add, sql_commit, sql_delete
 from flask_jwt_extended import create_access_token, create_refresh_token
 from datetime import datetime, timedelta
@@ -6,14 +7,17 @@ from uuid import uuid4
 import hashlib
 import os
 
+from apps.shared.global_exception import *
+
 class WPUser(IWPUser):
     def __init__(self, **kwargs):
         self.ID = uuid4()
         self.user_login = kwargs.get('login')
         self.set_password(kwargs.get('password'))
-        self.user_display_name = kwargs.get('name')
+        self.user_display_name = kwargs.get('display_name')
+        self.role_id = WPRole.get_name(USER_NAME).first().ID
 
-    def set_password(self, password):
+    def set_password(self, password: str):
         salt = os.urandom(16)
         self.user_salt = salt.hex()
         self.user_pass = hashlib.pbkdf2_hmac('sha256', password.encode(), salt, 100000).hex()
@@ -38,7 +42,7 @@ class WPUser(IWPUser):
                     "user_id": self.ID,
                     "role_id": self.role_id
                 },
-                expires_delta=expire_delta*6
+                expires_delta=expire_delta*7
             )
         }
     
@@ -50,7 +54,7 @@ class WPUser(IWPUser):
         user: WPUser = WPUser.get_login(login).first()
         hashed_password = hashlib.pbkdf2_hmac('sha256', password.encode(), bytes.fromhex(user.user_salt), 100000).hex()
         if hashed_password != user.user_pass:
-            raise Exception('Пользователя с таким логином или паролем не существует!')
+            None
         return user
     
     @classmethod
