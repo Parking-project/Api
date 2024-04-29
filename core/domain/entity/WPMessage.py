@@ -1,6 +1,5 @@
 from ..interface.IWPMessage import IWPMessage
-from .WPMessageMeta import WPMessageMeta
-from extensions.databse_extension import sql_query, sql_add, sql_commit, sql_delete
+from extensions.databse_extension import sql_query, sql_add
 from uuid import uuid4
 
 class WPMessage(IWPMessage):

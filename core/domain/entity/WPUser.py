@@ -1,6 +1,6 @@
 from ..interface.IWPUser import IWPUser
 from .WPRole import WPRole, USER_NAME
-from extensions.databse_extension import sql_query, sql_add, sql_commit, sql_delete
+from extensions.databse_extension import sql_query, sql_add, sql_commit
 from flask_jwt_extended import create_access_token, create_refresh_token
 from datetime import datetime, timedelta
 from uuid import uuid4

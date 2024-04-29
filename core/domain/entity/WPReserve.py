@@ -22,10 +22,10 @@ class WPReserve(IWPReserve):
         pass
 
     def delete(self):
-        pass
+        sql_delete(self)
 
     def save(self):
-        pass
+        sql_add(self)
 
     @classmethod
     def get_reserve_id(cls, reserve_id: str):

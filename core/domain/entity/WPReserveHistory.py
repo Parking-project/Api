@@ -1,5 +1,5 @@
 from ..interface.IWPReserveHistory import IWPReserveHistory
-from extensions.databse_extension import sql_query, sql_add, sql_commit, sql_delete
+from extensions.databse_extension import sql_query
 
 class WPReserveHistory(IWPReserveHistory):
     @classmethod

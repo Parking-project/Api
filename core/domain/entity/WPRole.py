@@ -1,5 +1,5 @@
 from ..interface.IWPRole import IWPRole
-from extensions.databse_extension import sql_query, sql_add, sql_commit, sql_delete
+from extensions.databse_extension import sql_query
 
 ADMIN_NAME = "ADMIN"
 EMPLOYEE_NAME = "EMPLOYEE"

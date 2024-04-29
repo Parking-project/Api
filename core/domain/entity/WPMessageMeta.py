@@ -1,5 +1,5 @@
 from ..interface.IWPMessageMeta import IWPMessageMeta
-from extensions.databse_extension import sql_query, sql_add, sql_commit, sql_delete
+from extensions.databse_extension import sql_query, sql_add
 from uuid import uuid4
 
 MESSAGE_USER_TELEGRAM_ID = "message_user_telegram_id"
