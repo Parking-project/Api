@@ -50,9 +50,9 @@ class WPUser(IWPUser):
         sql_add(self)
     
     @classmethod
-    def authenticate(cls, login: str, password: str):
-        user: WPUser = WPUser.get_login(login).first()
-        hashed_password = hashlib.pbkdf2_hmac('sha256', password.encode(), bytes.fromhex(user.user_salt), 100000).hex()
+    def authenticate(cls, **kwargs):
+        user: WPUser = WPUser.get_login(kwargs.get("login")).first()
+        hashed_password = hashlib.pbkdf2_hmac('sha256', kwargs.get("password").encode(), bytes.fromhex(user.user_salt), 100000).hex()
         if hashed_password != user.user_pass:
             None
         return user

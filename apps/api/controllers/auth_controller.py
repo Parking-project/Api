@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from core.domain.entity.WPUser import WPUser
 from core.domain.entity.WPTokenBlocList import WPTokenBlocList
+from core.domain.entity.WPAuthHistory import WPAuthHistory
 from ...shared.request_models import RequestUser
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt
 from ...shared.global_exception import *
@@ -9,14 +10,19 @@ from ..validators.none_validate import NoneValidator
 
 blueprint = Blueprint('token', __name__, url_prefix="/token")
 
+def sign_in(user_id: str):
+    WPAuthHistory(user_id=user_id).save()
+
 @blueprint.post('/login')
 def login():
     data = request.get_json()
     user: WPUser = NoneValidator.validate(WPUser.authenticate(**data))
+    tokens = user.get_tokens()
+    sign_in(user.ID)
     return jsonify(
         {
             "message": "Авторизация прошла успешно",
-            "tokens": user.get_tokens()
+            "tokens": tokens
         }
     )
 
@@ -28,10 +34,12 @@ def register():
         
     user = WPUser(**data)
     user.save()
+    tokens = user.get_tokens()
+    sign_in(user.ID)
     return jsonify(
         {
             "message": "Регистрация прошла успешно",
-            "tokens": user.get_tokens()
+            "tokens": tokens
         }
     ), 200
 

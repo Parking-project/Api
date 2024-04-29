@@ -10,6 +10,11 @@ class IWPRole(Base):
 
     @classmethod
     @abstractmethod
+    def get(cls):
+        pass
+
+    @classmethod
+    @abstractmethod
     def get_id(cls, role_id: str):
         pass
 

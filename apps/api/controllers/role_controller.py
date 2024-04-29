@@ -1,5 +1,18 @@
-from flask import Blueprint, jsonify, request
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt
-from core.domain.entity.WPRole import WPRole
+from flask import Blueprint, jsonify
+from flask_jwt_extended import jwt_required, get_jwt
+from core.domain.entity.WPRole import WPRole, ADMIN_NAME
+from core.domain.schema.RoleSchema import RoleSchema
+from ..validators.jwt_validate import JwtValidator
 
 blueprint = Blueprint('role', __name__, url_prefix="/role")
+
+@blueprint.get('/')
+@jwt_required()
+def get():
+    JwtValidator.validate(get_jwt(), ADMIN_NAME)
+    result = RoleSchema().dump(WPRole.get().all(), many=True)
+    return jsonify(
+        {
+            "roles": result
+        }
+    ), 200
