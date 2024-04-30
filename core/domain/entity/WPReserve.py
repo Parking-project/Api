@@ -1,5 +1,4 @@
 from ..interface.IWPReserve import IWPReserve
-from .WPPlace import WPPlace
 from ..enum import ReserveStatus
 from extensions.databse_extension import sql_query, sql_add, sql_commit, sql_delete
 from uuid import uuid4
@@ -11,8 +10,8 @@ class WPReserve(IWPReserve):
         self.reserve_end = kwargs.get('end')
         self.user_id = kwargs.get('user_id')
 
-    def add_place(self, place_code: str):
-        self.place_id = WPPlace.get_place_code(place_code).first().ID
+    def add_place(self, place_id: int):
+        self.place_id = place_id
         sql_commit()
 
     def approving(self):

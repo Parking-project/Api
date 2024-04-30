@@ -15,7 +15,7 @@ class IWPMessage(Base):
     user_id = Column(String(36),
                      ForeignKey('wp_user.ID'), nullable=True)
     message_root_id = Column(String(36),
-                               ForeignKey('wp_message.ID'), nullable=True)
+                               ForeignKey('wp_message.ID'), nullable=False)
     message_answer_id = Column(String(36),
                                ForeignKey('wp_message.ID'), nullable=True)
     

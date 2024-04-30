@@ -39,10 +39,11 @@ def register():
         {
             "login": IsStr(),
             "password": IsStr(),
+            "display_name": IsStr()
         }
     ).validate_exist(**data)
-    UserValidator.validate_register(**data)
-    UserValidator.validate_unique(**data)
+    UserValidator.validate(data.get("login"), data.get("password"), data.get("display_name"))
+    UserValidator.validate_unique(data.get("login"))
         
     user = WPUser(**data)
     user.save()
@@ -73,7 +74,7 @@ def logout():
 
     jti = jwt['jti']
     token_type = jwt['type']
-
+    WPUserMeta.get_user_id(user_id=jwt["sub"]["user_id"]).delete()
     token_b = WPTokenBlocList(jti=jti)
 
     token_b.save()

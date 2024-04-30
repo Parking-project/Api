@@ -21,7 +21,7 @@ class IWPReserve(Base):
         pass
 
     @abstractmethod
-    def add_place(self, place_code: str):
+    def add_place(self, place_id: int):
         pass
 
     @abstractmethod

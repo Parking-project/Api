@@ -8,7 +8,7 @@ blueprint = Blueprint('role', __name__, url_prefix="/role")
 
 @blueprint.get('/')
 @jwt_required()
-def get():
+def get_roles():
     JwtValidator.validate(get_jwt(), ADMIN_NAME)
     result = RoleSchema().dump(WPRole.get().all(), many=True)
     return jsonify(

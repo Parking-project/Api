@@ -8,7 +8,7 @@ blueprint = Blueprint('place', __name__, url_prefix="/place")
 
 @blueprint.get('/get_prefix')
 @jwt_required()
-def get():
+def get_places_by_prefix():
     data = request.get_json()
     DataExistValidator(
         {
@@ -27,7 +27,7 @@ def get():
 
 @blueprint.get('/get_code')
 @jwt_required()
-def get():
+def get_place_by_code():
     data = request.get_json()
     DataExistValidator(
         {
@@ -45,7 +45,7 @@ def get():
 
 @blueprint.get('/get_free')
 @jwt_required()
-def get():
+def get_free_places():
     data = request.get_json()
     DataExistValidator(
         {

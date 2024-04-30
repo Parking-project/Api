@@ -9,7 +9,7 @@ blueprint = Blueprint('auth', __name__, url_prefix="/auth")
 
 @blueprint.get('/get')
 @jwt_required()
-def get():
+def get_auth_history():
     JwtValidator.validate(get_jwt(), {ADMIN_NAME})
     data = request.get_json()
     page_index, page_size = PageValidator.validate(**data)

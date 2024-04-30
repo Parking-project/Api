@@ -9,7 +9,7 @@ blueprint = Blueprint('token_bloc_list', __name__, url_prefix="/token_bloc_list"
 
 @blueprint.get('/get')
 @jwt_required()
-def get():
+def get_bloc_tokens():
     JwtValidator.validate(get_jwt(), {ADMIN_NAME})
     data = request.get_json()
     page_index, page_size = PageValidator.validate(**data)
