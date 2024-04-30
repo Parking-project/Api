@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify
 from flask_jwt_extended import jwt_required, get_jwt
 from core.domain.entity.WPRole import WPRole, ADMIN_NAME
 from core.domain.schema.RoleSchema import RoleSchema
-from ..validators.jwt_validate import JwtValidator
+from ..validators.common import JwtValidator
 
 blueprint = Blueprint('role', __name__, url_prefix="/role")
 
