@@ -21,5 +21,5 @@ class IWPAuthHistory(Base):
 
     @classmethod
     @abstractmethod
-    def get(cls, page_index, page_size):
+    def get(cls, page_index: int, page_size: int):
         pass

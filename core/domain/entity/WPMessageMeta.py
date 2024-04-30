@@ -9,8 +9,8 @@ MESSAGE_TELEGRAM_ID = "message_telegram_id"
 class WPMessageMeta(IWPMessageMeta):
     def __init__(self, **kwargs):
         self.ID = uuid4()
-        self.message_meta_key = kwargs.get('key')
-        self.message_meta_value = kwargs.get('value')
+        self.message_meta_key = kwargs.get('message_meta_key')
+        self.message_meta_value = kwargs.get('message_meta_value')
         self.message_id = kwargs.get('message_id')
 
     def save(self):

@@ -8,7 +8,7 @@ class WPUserMeta(IWPUserMeta):
     def __init__(self, **kwargs):
         self.ID = uuid4()
         self.user_meta_key = kwargs.get('key')
-        self.user_meta_value = kwargs.get('value')
+        self.user_meta_value = str(kwargs.get('value'))
         self.user_id = kwargs.get('user_id')
 
     def save(self):

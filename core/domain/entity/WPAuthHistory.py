@@ -11,6 +11,6 @@ class WPAuthHistory(IWPAuthHistory):
         sql_add(self)
 
     @classmethod
-    def get(cls, page_index, page_size):
-        sql_query(WPAuthHistory, (True)).order_by(WPAuthHistory.auth_date).\
-            offset(page_index*page_size).limit(page_size)
+    def get(cls, page_index: int, page_size: int):
+        return sql_query(WPAuthHistory, (True)).order_by(WPAuthHistory.auth_date).\
+            offset(page_size*page_index).limit(page_size)

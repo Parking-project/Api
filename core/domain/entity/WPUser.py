@@ -2,12 +2,10 @@ from ..interface.IWPUser import IWPUser
 from .WPRole import WPRole, USER_NAME
 from extensions.databse_extension import sql_query, sql_add, sql_commit
 from flask_jwt_extended import create_access_token, create_refresh_token
-from datetime import datetime, timedelta
+from datetime import timedelta
 from uuid import uuid4
 import hashlib
 import os
-
-from apps.shared.global_exception import *
 
 class WPUser(IWPUser):
     def __init__(self, **kwargs):

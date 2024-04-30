@@ -27,10 +27,5 @@ class IWPDocument(Base):
 
     @classmethod
     @abstractmethod
-    def get_document_id(cls, document_id: str):
-        pass
-
-    @classmethod
-    @abstractmethod
     def get_message_id(cls, message_id: str):
         pass

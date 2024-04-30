@@ -17,26 +17,21 @@ class WPMessage(IWPMessage):
     @classmethod
     def get(cls, page_index, page_size):
         return sql_query(WPMessage, (True)).order_by(WPMessage.message_date). \
-                    offset(page_size * page_index).limit(page_size)
+                    offset(page_size * page_index).limit(page_size).order_by(WPMessage.message_date)
 
     @classmethod
     def get_root_id(cls, root_id: str, page_index, page_size):
         filter_condition = (WPMessage.message_root_id == root_id | WPMessage.ID == root_id)
         return sql_query(WPMessage, filter_condition).order_by(WPMessage.message_date). \
-                    offset(page_size * page_index).limit(page_size)
+                    offset(page_size * page_index).limit(page_size).order_by(WPMessage.message_date)
 
     @classmethod
     def get_user_id(cls, user_id: str, page_index, page_size):
         filter_condition = (WPMessage.user_id == user_id | WPMessage.message_answer_id is None)
         return sql_query(WPMessage, filter_condition).order_by(WPMessage.message_date). \
-                    offset(page_size * page_index).limit(page_size)
+                    offset(page_size * page_index).limit(page_size).order_by(WPMessage.message_date)
     
     @classmethod
-    def get_message_id(cls, message_id: str, is_bot: bool = True):
-        if is_bot:
-            filter_condition = (WPMessage.ID == message_id) & \
-                (WPMessage.user_id == None)
-        else:
-            filter_condition = (WPMessage.ID == message_id) & \
-                (WPMessage.user_id != None)
+    def get_message_id(cls, message_id: str):
+        filter_condition = (WPMessage.ID == message_id)
         return sql_query(WPMessage, filter_condition)
