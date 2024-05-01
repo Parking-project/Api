@@ -5,7 +5,7 @@ from sqlalchemy.orm import Query
 
 from config.database_config import DatabaseConfig
 
-from apps.shared.global_exception import ConnectionError
+from apps.shared import ConnectionError
 
 Base = declarative_base()
 engine = create_engine(

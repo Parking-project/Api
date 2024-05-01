@@ -1,14 +1,16 @@
 from flask import Flask
-from apps.api.controllers.auth import blueprint as auth_bp
-from apps.api.controllers.document import blueprint as document_bp
-from apps.api.controllers.message import blueprint as message_bp
-from apps.api.controllers.place import blueprint as place_bp
-from apps.api.controllers.reserve_history import blueprint as reserve_history_bp
-from apps.api.controllers.reserve import blueprint as reserve_bp
-from apps.api.controllers.role import blueprint as role_bp
-from apps.api.controllers.token_bloc_list import blueprint as token_bloc_list_bp
-from apps.api.controllers.token import blueprint as token_bp
-from apps.api.controllers.user import blueprint as user_bp
+from apps.api.controllers import (
+    auth_bp,
+    document_bp,
+    message_bp,
+    place_bp,
+    reserve_history_bp,
+    reserve_bp,
+    role_bp,
+    token_bloc_list_bp,
+    token_bp,
+    user_bp
+)
 
 def register_routes(app: Flask):
     """
