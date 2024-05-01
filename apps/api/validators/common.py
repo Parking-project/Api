@@ -1,6 +1,6 @@
-from ...shared.global_exception import PageError, DataError, SecurityError
-from core.domain.entity.WPUser import WPUser
-from core.domain.entity.WPRole import WPRole
+from ...shared import PageError, DataError, SecurityError
+from core.domain.entity import WPUser
+from core.domain.entity import WPRole
 
 
 class NoneValidator:
@@ -13,6 +13,7 @@ class NoneValidator:
 class JwtValidator:
     @classmethod
     def validate(cls, jwt, role_names: list[str]):
+        role_names = list[str](role_names)
         user = WPUser.get_user_id(jwt["sub"]["user_id"]).first()
         role = WPRole.get_id(jwt["sub"]["role_id"]).first()
         if user is not None and role is not None:
