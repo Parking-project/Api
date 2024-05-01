@@ -1,6 +1,6 @@
 from marshmallow import fields, Schema
 
-class DocumentSchema(Schema):
+class SDocument(Schema):
     ID = fields.String()
     document_file_id = fields.String()
     document_file_unique_id = fields.String()

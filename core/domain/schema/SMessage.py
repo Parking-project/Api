@@ -1,6 +1,6 @@
 from marshmallow import fields, Schema
 
-class MessageSchema(Schema):
+class SMessage(Schema):
     ID = fields.String()
     message_date = fields.Integer()
     message_text = fields.String()

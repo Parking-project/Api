@@ -1,6 +1,6 @@
 from marshmallow import fields, Schema
 
-class ReserveSchema(Schema):
+class SReserve(Schema):
     ID = fields.String()
     reserve_begin = fields.Integer()
     reserve_end = fields.Integer()
