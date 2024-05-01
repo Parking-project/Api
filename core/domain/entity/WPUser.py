@@ -50,10 +50,18 @@ class WPUser(IWPUser):
     @classmethod
     def authenticate(cls, **kwargs):
         user: WPUser = WPUser.get_login(kwargs.get("login")).first()
-        hashed_password = hashlib.pbkdf2_hmac('sha256', kwargs.get("password").encode(), bytes.fromhex(user.user_salt), 100000).hex()
-        if hashed_password != user.user_pass:
-            None
-        return user
+        if user is None:
+            return None
+        password = kwargs["password"]
+        hashed_password = hashlib.pbkdf2_hmac(
+            hash_name='sha256',
+            password=password.encode(),
+            salt=bytes.fromhex(user.user_salt),
+            iterations=100000
+        ).hex()
+        if hashed_password == user.user_pass:
+            return user
+        return None
     
     @classmethod
     def get_user_id(cls, user_id: str):
