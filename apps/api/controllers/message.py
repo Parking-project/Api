@@ -5,7 +5,7 @@ from flask_jwt_extended import jwt_required
 from core.domain.entity.WPUser import WPUser
 from core.domain.entity.WPMessage import WPMessage
 from core.domain.entity.WPMessageMeta import WPMessageMeta, MESSAGE_BOT_TELEGRAM_ID, MESSAGE_TELEGRAM_ID, MESSAGE_CHAT_TELEGRAM_ID
-from core.domain.schema.MessageSchema import MessageSchema
+from core.domain.schema.SMessage import SMessage
 from ..validators.common import DataExistValidator, IsStr, IsInt, PageValidator
 
 from config.telegram_config import TelegramConfig
@@ -17,7 +17,7 @@ blueprint = Blueprint('message', __name__, url_prefix="/message")
 def get_messages():
     data = request.get_json()
     page_index, page_size = PageValidator.validate(**data)
-    result = MessageSchema().dump(
+    result = SMessage().dump(
         WPMessage.get_message_id(page_index, page_size).all(), many=True
     )
     return jsonify(
@@ -36,7 +36,7 @@ def get_messages_by_root():
         }
     ).validate_exist(**data)
     page_index, page_size = PageValidator.validate(**data)
-    result = MessageSchema().dump(
+    result = SMessage().dump(
         WPMessage.get_message_id(data.get("root_id"), page_index, page_size).all(), many=True
     )
     return jsonify(
@@ -55,7 +55,7 @@ def get_messages_by_user():
         }
     ).validate_exist(**data)
     page_index, page_size = PageValidator.validate(**data)
-    result = MessageSchema().dump(
+    result = SMessage().dump(
         WPMessage.get_message_id(data.get("user_id"), page_index, page_size).all(), many=True
     )
     return jsonify(
@@ -73,7 +73,7 @@ def get_message_by_message_id():
             "message_id": IsStr() 
         }
     ).validate_exist(**data)
-    result = MessageSchema().dump(
+    result = SMessage().dump(
         WPMessage.get_message_id(data.get("message_id")).all(), many=True
     )
     return jsonify(

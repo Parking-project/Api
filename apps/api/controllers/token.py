@@ -7,6 +7,7 @@ from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identi
 from ...shared.global_exception import *
 from ..validators.common import NoneValidator, DataExistValidator, IsInt, IsStr
 from ..validators.user import UserValidator
+from datetime import timedelta
 
 blueprint = Blueprint('token', __name__, url_prefix="/token")
 
@@ -60,10 +61,10 @@ def register():
 @jwt_required(refresh=True)
 def refresh_access():
     identity = get_jwt_identity()
-    new_access_token = create_access_token(identity=identity, expires_delta=24)
+    new_access_token = create_access_token(identity=identity, expires_delta=timedelta(24))
     return jsonify(
         {
-            "access", new_access_token
+            "access": new_access_token
         }
     )
 

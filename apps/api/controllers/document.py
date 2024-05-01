@@ -6,7 +6,7 @@ from flask_jwt_extended import jwt_required, get_jwt
 from core.domain.entity.WPDocument import WPDocument
 from core.domain.entity.WPMessage import WPMessage
 from core.domain.entity.WPMessageMeta import WPMessageMeta, MESSAGE_BOT_TELEGRAM_ID, MESSAGE_TELEGRAM_ID, MESSAGE_CHAT_TELEGRAM_ID
-from core.domain.schema.DocumentSchema import DocumentSchema
+from core.domain.schema.SDocument import SDocument
 from ..validators.common import DataExistValidator, JwtValidator, IsInt, IsStr
 from core.domain.entity.WPRole import ADMIN_NAME, USER_NAME, EMPLOYEE_NAME
 
@@ -26,7 +26,7 @@ def get_documents_by_message_id():
             "message_id": IsStr() 
         }
     ).validate_exist(**data)
-    result = DocumentSchema().dump(WPDocument.get_message_id(data.get("message_id")).all(), many=True)
+    result = SDocument().dump(WPDocument.get_message_id(data.get("message_id")).all(), many=True)
     return jsonify(
         {
             "documents": result
