@@ -5,10 +5,10 @@ from core.domain.entity import WPRole
 
 class NoneValidator:
     @classmethod
-    def validate(cls, data):
-        if data is None:
-            raise DataError(f"Данные не найдены {data}")
-        return data
+    def validate(cls, key, value):
+        if value is None:
+            raise DataError(f"Данные {key} не найдены")
+        return value
 
 class JwtValidator:
     @classmethod
@@ -67,5 +67,5 @@ class DataExistValidator:
     def validate_exist(self, **kwargs):
         for key, value in self.key_exist.items():
             data = kwargs.get(key)
-            NoneValidator.validate(data)
+            NoneValidator.validate(key=key, value=data)
             value.check(data)

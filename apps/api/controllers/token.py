@@ -23,7 +23,7 @@ def login():
             "password": IsStr(),
         }
     ).validate_exist(**data)
-    user: WPUser = NoneValidator.validate(WPUser.authenticate(**data))
+    user: WPUser = NoneValidator.validate(key="user object", value=WPUser.authenticate(**data))
     tokens = user.get_tokens()
     sign_in(user.ID)
     return jsonify(
@@ -85,3 +85,13 @@ def logout():
             "message": f"{token_type} token revoked successfully"
         }
     ), 200
+
+
+@blueprint.get('/check')
+@jwt_required()
+def check():
+    return jsonify(
+        {
+            "message": "OK"
+        }
+    )
