@@ -1,4 +1,4 @@
-from ..interface.IWPTokenBlocList import IWPTokenBlocList
+from ..interface import IWPTokenBlocList
 from extensions.databse_extension import sql_query, sql_add
 from uuid import uuid4
 

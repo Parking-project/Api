@@ -1,4 +1,4 @@
-from ..interface.IWPReserve import IWPReserve
+from ..interface import IWPReserve
 from ..enum import ReserveStatus
 from extensions.databse_extension import sql_query, sql_add, sql_commit, sql_delete
 from uuid import uuid4

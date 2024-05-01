@@ -1,4 +1,4 @@
-from ..interface.IWPMessageMeta import IWPMessageMeta
+from ..interface import IWPMessageMeta
 from extensions.databse_extension import sql_query, sql_add
 from uuid import uuid4
 

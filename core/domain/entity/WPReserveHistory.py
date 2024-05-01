@@ -1,4 +1,4 @@
-from ..interface.IWPReserveHistory import IWPReserveHistory
+from ..interface import IWPReserveHistory
 from extensions.databse_extension import sql_query
 
 class WPReserveHistory(IWPReserveHistory):

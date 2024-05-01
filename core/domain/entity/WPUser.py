@@ -1,4 +1,4 @@
-from ..interface.IWPUser import IWPUser
+from ..interface import IWPUser
 from .WPRole import WPRole, USER_NAME
 from extensions.databse_extension import sql_query, sql_add, sql_commit
 from flask_jwt_extended import create_access_token, create_refresh_token

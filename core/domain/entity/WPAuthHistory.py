@@ -1,4 +1,4 @@
-from ..interface.IWPAuthHistory import IWPAuthHistory
+from ..interface import IWPAuthHistory
 from extensions.databse_extension import sql_query, sql_add
 from uuid import uuid4
 

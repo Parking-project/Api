@@ -1,4 +1,4 @@
-from ..interface.IWPRole import IWPRole
+from ..interface import IWPRole
 from extensions.databse_extension import sql_query
 
 ADMIN_NAME = "ADMIN"

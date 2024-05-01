@@ -1,4 +1,4 @@
-from ..interface.IWPDocument import IWPDocument
+from ..interface import IWPDocument
 from extensions.databse_extension import sql_query, sql_add
 from uuid import uuid4
 

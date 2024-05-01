@@ -1,4 +1,4 @@
-from ..interface.IWPPlace import IWPPlace
+from ..interface import IWPPlace
 from .WPReserve import WPReserve
 from extensions.databse_extension import sql_query, sql_add, sql_commit
 from uuid import uuid4
