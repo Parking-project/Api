@@ -1,11 +1,13 @@
 from ..interface import IWPTokenBlocList
 from extensions.databse_extension import sql_query, sql_add
+from datetime import datetime
 from uuid import uuid4
 
 class WPTokenBlocList(IWPTokenBlocList):
     def __init__(self, **kwargs):
         self.ID = uuid4()
         self.token_jti = kwargs.get("jti")
+        self.token_create = datetime.now().timestamp()
 
     def save(self):
         sql_add(self)

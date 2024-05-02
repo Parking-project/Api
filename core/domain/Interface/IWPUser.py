@@ -1,6 +1,5 @@
 from extensions.databse_extension import Base
 from sqlalchemy import Column, String, ForeignKey, BigInteger
-from datetime import datetime
 from abc import abstractmethod
 
 class IWPUser(Base):
@@ -11,7 +10,7 @@ class IWPUser(Base):
     user_salt = Column(String(255), nullable=False)
     user_pass = Column(String(255), nullable=False)
     user_display_name = Column(String(255), nullable=False)
-    user_registered = Column(BigInteger, nullable=False, default=datetime.now().timestamp())
+    user_registered = Column(BigInteger, nullable=False)
 
     role_id = Column(String(36),
                      ForeignKey('wp_role.ID'), nullable=False)

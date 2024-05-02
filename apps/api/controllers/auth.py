@@ -16,6 +16,6 @@ def get_auth_history():
     result = SAuthHistory().dump(WPAuthHistory.get(page_index, page_size).all(), many=True)
     return jsonify(
         {
-            "auth": result
+            "data": result
         }
     ), 200

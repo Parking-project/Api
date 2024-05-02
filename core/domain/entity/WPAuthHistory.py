@@ -1,11 +1,13 @@
 from ..interface import IWPAuthHistory
 from extensions.databse_extension import sql_query, sql_add
 from uuid import uuid4
+from datetime import datetime
 
 class WPAuthHistory(IWPAuthHistory):
     def __init__(self, **kwargs):
         self.ID = uuid4()
         self.user_id = kwargs.get("user_id")
+        self.auth_date = default=datetime.now().timestamp()
 
     def save(self):
         sql_add(self)

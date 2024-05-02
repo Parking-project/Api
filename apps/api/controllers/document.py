@@ -44,8 +44,7 @@ def post_document():
             "document_file_unique_id": IsStr(),
             "document_file_size": IsInt(),
             "document_file_url": IsStr(),
-            "document_file_mime": IsStr(),
-            "message_id": IsStr()
+            "document_file_mime": IsStr()
         }
     ).validate_exist(**data)
     document = WPDocument(**data)

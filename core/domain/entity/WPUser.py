@@ -2,7 +2,7 @@ from ..interface import IWPUser
 from .WPRole import WPRole, USER_NAME
 from extensions.databse_extension import sql_query, sql_add, sql_commit
 from flask_jwt_extended import create_access_token, create_refresh_token
-from datetime import timedelta
+from datetime import datetime, timedelta
 from uuid import uuid4
 import hashlib
 import os
@@ -12,6 +12,7 @@ class WPUser(IWPUser):
         self.ID = uuid4()
         self.user_login = kwargs.get('login')
         self.set_password(kwargs.get('password'))
+        self.user_registered = datetime.now().timestamp()
         self.user_display_name = kwargs.get('display_name')
         self.role_id = WPRole.get_name(USER_NAME).first().ID
 

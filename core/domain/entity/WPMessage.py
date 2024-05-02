@@ -1,6 +1,7 @@
 from ..interface import IWPMessage
 from .WPMessageMeta import WPMessageMeta
 from extensions.databse_extension import sql_query, sql_add
+from datetime import datetime
 from uuid import uuid4
 
 class WPMessage(IWPMessage):
@@ -9,6 +10,8 @@ class WPMessage(IWPMessage):
         self.message_text = kwargs.get('text')
         self.user_id = kwargs.get('user_id')
         answer_tg_id = kwargs.get('answer_tg_id')
+        self.message_date = datetime.now().timestamp()
+        
         if isinstance(answer_tg_id, int):
             self.message_answer_id = WPMessageMeta.get_message_id(message_tg_id=answer_tg_id)
         if self.message_answer_id is not None:
