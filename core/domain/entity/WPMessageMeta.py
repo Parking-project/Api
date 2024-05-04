@@ -23,25 +23,25 @@ class WPMessageMeta(IWPMessageMeta):
 
     @classmethod
     def get_group_id(cls, message_id: str):
-        filter_condition = (WPMessageMeta.message_id == message_id & \
+        filter_condition = (WPMessageMeta.message_id == message_id and \
                             WPMessageMeta.message_meta_key == CHAT_ID)
         return sql_query(WPMessageMeta, filter_condition)
 
     @classmethod
     def get_message_id(cls, message_id: str):
-        filter_condition = (WPMessageMeta.message_id == message_id & \
+        filter_condition = (WPMessageMeta.message_id == message_id and \
                             WPMessageMeta.message_meta_key == MESSAGE_ID)
         return sql_query(WPMessageMeta, filter_condition)
 
     @classmethod
     def get_bot_message_id(cls, message_id: str):
-        filter_condition = (WPMessageMeta.message_id == message_id & \
+        filter_condition = (WPMessageMeta.message_id == message_id and \
                             WPMessageMeta.message_meta_key == MESSAGE_BOT_ID)
         return sql_query(WPMessageMeta, filter_condition)
     
     @classmethod
     def get_by_message_tg_id(cls, message_tg_id: int):
-        filter_condition = (WPMessageMeta.message_meta_key == MESSAGE_BOT_ID & \
+        filter_condition = (WPMessageMeta.message_meta_key == MESSAGE_BOT_ID and \
                             WPMessageMeta.message_meta_value == str(message_tg_id))
         result = sql_query(WPMessageMeta, filter_condition).first()
         if result is None:

@@ -138,39 +138,34 @@ def post_employee_message():
             )
         )
 
-
-
 @blueprint.post("/post_chat")
 @jwt_required()
 def post_user_message():
     data = request.get_json()
     message: WPMessage = None
     answer_id = None
+    DataExistValidator({"text": IsStr()}).validate_exist(**data)
+
     if data.get(MESSAGE_BOT_ID) is None:
         message: WPMessage = WPMessage(
-            text=data.get("text"),
+            text=data["text"],
             user_id=get_jwt()["sub"]["user_id"]
         )
-        message.save()
     else:
-        DataExistValidator(
-        {
-            "text": IsStr(),
-            MESSAGE_BOT_ID: IsInt(),
-        }
-        ).validate_exist(**data)
-        message_meta: WPMessageMeta = WPMessageMeta.get_by_message_tg_id(data[MESSAGE_BOT_ID]).first()
+        message_meta = WPMessageMeta.get_by_message_tg_id(data[MESSAGE_BOT_ID])
         message: WPMessage = WPMessage(
-            text=data.get("text"),
+            text=data["text"],
             user_id=get_jwt()["sub"]["user_id"],
-            answer_message_id=message_meta.message_id
+            answer_message_id=(message_meta.count() == 0 if None else message_meta.message_id)
         )
-        message.save()
-
+        chat_id=int(WPMessageMeta.get_group_id(message_meta.message_id).first().message_meta_value),
+        message_meta = WPMessageMeta.get_message_id(message_meta.message_id)
+        answer_id = (message_meta.count() == 0 if None else int(message_meta.first().message_meta_value))    
+        
+    message.save()
+    if data.get(CHAT_ID) is not None and data.get(MESSAGE_ID) is not None:
         save_message_meta(CHAT_ID, data[CHAT_ID], message.ID)
         save_message_meta(MESSAGE_ID, data[MESSAGE_ID], message.ID)
-        answer_id=int(WPMessageMeta.get_message_id(message_meta.message_id).first().message_meta_value)
-        
     save_message_meta(
         MESSAGE_BOT_ID,
         asyncio.run(
