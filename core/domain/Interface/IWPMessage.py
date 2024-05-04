@@ -8,7 +8,7 @@ class IWPMessage(Base):
     ID = Column(String(36), primary_key=True)
     message_date = Column(BigInteger, nullable=False)
     message_text = Column(Text, nullable=True)
-    message_iterator = Column(Integer, nullable=False, default=0)
+    message_iterate = Column(Integer, nullable=False, default=0)
     message_is_end = Column(Boolean, nullable=False, default=0)
 
     user_id = Column(String(36),
