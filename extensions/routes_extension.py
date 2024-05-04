@@ -1,5 +1,5 @@
 from flask import Flask
-from apps.api.controllers import (
+from api.controllers import (
     auth_bp,
     document_bp,
     message_bp,
