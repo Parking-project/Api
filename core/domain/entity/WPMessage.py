@@ -4,22 +4,21 @@ from extensions.databse_extension import sql_query, sql_add
 from datetime import datetime
 from uuid import uuid4
 
-class WPMessage(IWPMessage):
-    def __init__(self, **kwargs):
+class WPMessage(IWPMessage):        
+    def __init__(self, text: str, user_id: str, answer_message_id: int = None):
         self.ID = uuid4()
-        self.message_text = kwargs.get('text')
-        self.user_id = kwargs.get('user_id')
-        answer_tg_id = kwargs.get('answer_tg_id')
+        self.message_text = text
+        self.user_id = user_id
         self.message_date = datetime.now().timestamp()
-        
-        if isinstance(answer_tg_id, int):
-            self.message_answer_id = WPMessageMeta.get_message_id(message_tg_id=answer_tg_id)
-        if self.message_answer_id is not None:
-            answer_message: WPMessage = WPMessage.get_message_id(self.message_answer_id).first()
-            self.message_root_id = answer_message.message_root_id
-            self.message_iterator = answer_message.message_iterator + 1
-        else:
+        if answer_message_id is None:
             self.message_root_id = self.ID
+            return
+        
+        self.message_answer_id = answer_message_id
+        answer_message: WPMessage = WPMessage.get_message_id(answer_message_id).first()
+        
+        self.message_root_id = answer_message.message_root_id
+        self.message_iterate = answer_message.message_iterate + 1
         
     def save(self):
         sql_add(self)
