@@ -16,6 +16,6 @@ def get_reserve_history():
     result = SReserveHistory().dump(WPReserveHistory.get(page_index, page_size).all(), many=True)
     return jsonify(
         {
-            "reserve_history": result
+            "data": result
         }
     ), 200

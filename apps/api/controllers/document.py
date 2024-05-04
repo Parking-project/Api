@@ -5,7 +5,7 @@ from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt
 from core.domain.entity.WPDocument import WPDocument
 from core.domain.entity.WPMessage import WPMessage
-from core.domain.entity.WPMessageMeta import WPMessageMeta, MESSAGE_BOT_TELEGRAM_ID, MESSAGE_TELEGRAM_ID, MESSAGE_CHAT_TELEGRAM_ID
+from core.domain.entity.WPMessageMeta import WPMessageMeta, MESSAGE_BOT_ID, MESSAGE_ID, CHAT_ID
 from core.domain.schema.SDocument import SDocument
 from ..validators.common import DataExistValidator, JwtValidator, IsInt, IsStr
 from core.domain.entity.WPRole import ADMIN_NAME, USER_NAME, EMPLOYEE_NAME
@@ -54,7 +54,7 @@ def post_document():
     chat_id_send = None
     
     if message.user_id is None:
-        chat_id_send = WPMessageMeta.get(message.ID, MESSAGE_CHAT_TELEGRAM_ID)
+        chat_id_send = WPMessageMeta.get(message.ID, CHAT_ID)
         if chat_id_send is None:
             return jsonify(
                 {
@@ -63,7 +63,7 @@ def post_document():
             ), 200
     else:
         chat_id_send = TelegramConfig.GROUP_ID
-    reply_message_id = WPMessageMeta.get(message.ID, MESSAGE_TELEGRAM_ID)
+    reply_message_id = WPMessageMeta.get(message.ID, MESSAGE_ID)
     
     document = URLInputFile(
         url=document.document_file_url,

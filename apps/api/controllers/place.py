@@ -21,7 +21,7 @@ def get_places_by_prefix():
     )
     return jsonify(
         {
-            "places": result
+            "data": result
         }
     ), 200
 
@@ -39,7 +39,7 @@ def get_place_by_code():
     )
     return jsonify(
         {
-            "places": result
+            "data": result
         }
     ), 200
 
@@ -58,6 +58,6 @@ def get_free_places():
     )
     return jsonify(
         {
-            "places": result
+            "data": result
         }
     ), 200

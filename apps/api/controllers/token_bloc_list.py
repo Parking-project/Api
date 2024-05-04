@@ -16,7 +16,7 @@ def get_bloc_tokens():
     result = STokenBlocList().dump(WPTokenBlocList.get(page_index, page_size).all(), many=True)
     return jsonify(
         {
-            "reserve_history": result
+            "data": result
         }
     ), 200
 

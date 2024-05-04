@@ -13,6 +13,6 @@ def get_roles():
     result = SRole().dump(WPRole.get().all(), many=True)
     return jsonify(
         {
-            "roles": result
+            "data": result
         }
     ), 200
