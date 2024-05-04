@@ -1,5 +1,6 @@
-from ..interface import IWPUser
-from .WPRole import WPRole, USER_NAME
+from core.domain.interface import IWPUser
+
+from core.domain.entity import WPRole
 from extensions.databse_extension import sql_query, sql_add, sql_commit
 from flask_jwt_extended import create_access_token, create_refresh_token
 from datetime import datetime, timedelta
@@ -14,7 +15,7 @@ class WPUser(IWPUser):
         self.set_password(kwargs.get('password'))
         self.user_registered = datetime.now().timestamp()
         self.user_display_name = kwargs.get('display_name')
-        self.role_id = WPRole.get_name(USER_NAME).first().ID
+        self.role_id = WPRole.get_name(WPRole.USER_NAME).first().ID
 
     def set_password(self, password: str):
         salt = os.urandom(16)
@@ -67,9 +68,15 @@ class WPUser(IWPUser):
     @classmethod
     def get_user_id(cls, user_id: str):
         filter_condition = (WPUser.ID == user_id)
-        return sql_query(WPUser, filter_condition)
+        result = sql_query(WPUser, filter_condition)
+        if result.count() == 0:
+            return None
+        return result.first()
     
     @classmethod
     def get_login(cls, login: str):
         filter_condition = (WPUser.user_login == login)
-        return sql_query(WPUser, filter_condition)
+        result = sql_query(WPUser, filter_condition)
+        if result.count() == 0:
+            return []
+        return result.all()

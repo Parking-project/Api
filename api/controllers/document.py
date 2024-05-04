@@ -5,11 +5,11 @@ from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt
 from core.domain.entity.WPDocument import WPDocument
 from core.domain.entity.WPMessage import WPMessage
-from core.domain.entity.WPMessageMeta import WPMessageMeta, MESSAGE_BOT_ID, MESSAGE_ID, CHAT_ID
+from core.domain.entity.WPMessageMeta import WPMessageMeta
 from core.domain.schema.SDocument import SDocument
-from ...shared.global_exception import DataError
-from ..validators.common import DataExistValidator, JwtValidator, IsInt, IsStr
-from core.domain.entity.WPRole import ADMIN_NAME, USER_NAME, EMPLOYEE_NAME
+from api.shared.global_exception import DataError
+from api.validators.common import DataExistValidator, JwtValidator, IsInt, IsStr
+from core.domain.entity import WPRole
 
 from config.telegram_config import TelegramConfig
 import os
@@ -21,14 +21,14 @@ blueprint = Blueprint('document', __name__, url_prefix="/document")
 @blueprint.get('/get')
 @jwt_required()
 def get_documents_by_message_id():
-    JwtValidator.validate(get_jwt(), {ADMIN_NAME, USER_NAME})
+    JwtValidator.validate(get_jwt(), {WPRole.ADMIN_NAME, WPRole.USER_NAME})
     data = request.get_json()
     DataExistValidator(
         {
             "message_id": IsStr() 
         }
     ).validate_exist(**data)
-    result = SDocument().dump(WPDocument.get_message_id(data.get("message_id")).all(), many=True)
+    result = SDocument().dump(WPDocument.get_message_id(data.get("message_id")), many=True)
     return jsonify(
         {
             "documents": result
@@ -60,7 +60,7 @@ def post_document():
     ).validate_exist(**data)
     message = WPMessage.get_first_user_id(
         user_id=get_jwt()["sub"]["user_id"],
-    ).first()
+    )
     if message is None:
         raise DataError("Сообщение не найдено")
     document = WPDocument(message_id=message.ID, **data)

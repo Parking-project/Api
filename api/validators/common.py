@@ -1,4 +1,4 @@
-from ...shared import PageError, DataError, SecurityError
+from api.shared import PageError, DataError, SecurityError
 from core.domain.entity import WPUser
 from core.domain.entity import WPRole
 

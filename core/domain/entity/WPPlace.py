@@ -1,7 +1,9 @@
-from ..interface import IWPPlace
-from .WPReserve import WPReserve
+from core.domain.interface import IWPPlace
+
 from extensions.databse_extension import sql_query, sql_add, sql_commit
 from uuid import uuid4
+
+from core.domain.entity import WPReserve
 
 class WPPlace(IWPPlace):    
     def __init__(self, **kwargs):
@@ -18,13 +20,20 @@ class WPPlace(IWPPlace):
     @classmethod
     def get_place_prefix(cls, place_prefix: str, page_index, page_size):
         filter_condition = (WPPlace.place_code.contains(place_prefix))
-        return sql_query(WPPlace, filter_condition). \
-                    offset(page_size * page_index).limit(page_size)
+        result = sql_query(WPPlace, filter_condition).\
+            offset(page_size * page_index).\
+            limit(page_size)
+        if result.count() == 0:
+            return []
+        return result.all()
 
     @classmethod
     def get_place_code(cls, place_code: str):
         filter_condition = (WPPlace.place_code == place_code)
-        return sql_query(WPPlace, filter_condition)
+        result = sql_query(WPPlace, filter_condition)
+        if result.count() == 0:
+            return None
+        return result.first()
 
     @classmethod
     def get_free(cls, hours: int, page_index, page_size):
@@ -33,5 +42,8 @@ class WPPlace(IWPPlace):
             filter_condition_place = (~WPPlace.ID.in_([x.place_id for x in reserves.all()]))
         else:
             filter_condition_place = (True)
-        return sql_query(WPPlace, filter_condition_place). \
+        result = sql_query(WPPlace, filter_condition_place). \
                     offset(page_size * page_index).limit(page_size)
+        if result.count() == 0:
+            return []
+        return result.all()

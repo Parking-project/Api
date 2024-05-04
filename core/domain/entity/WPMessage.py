@@ -1,8 +1,8 @@
-from sqlalchemy import desc
-from ..interface import IWPMessage
-from .WPMessageMeta import WPMessageMeta
+from core.domain.interface import IWPMessage
+
 from extensions.databse_extension import sql_query, sql_add
 from datetime import datetime
+from sqlalchemy import desc
 from uuid import uuid4
 
 class WPMessage(IWPMessage):        
@@ -26,30 +26,42 @@ class WPMessage(IWPMessage):
 
     @classmethod
     def get(cls, page_index, page_size):
-        return sql_query(WPMessage, (True)).order_by(WPMessage.message_date). \
-                    offset(page_size * page_index).limit(page_size).order_by(WPMessage.message_date)
+        result = sql_query(WPMessage, (True)).\
+            order_by(WPMessage.message_date).\
+            offset(page_size * page_index).\
+            limit(page_size)
+        if result.count() == 0:
+            return []
+        return result.all()
 
     @classmethod
     def get_root_id(cls, root_id: str, page_index, page_size):
-        filter_condition = (WPMessage.message_root_id == root_id | WPMessage.ID == root_id)
-        return sql_query(WPMessage, filter_condition).order_by(WPMessage.message_date). \
-                    offset(page_size * page_index).limit(page_size).order_by(WPMessage.message_date)
+        filter_condition = (WPMessage.message_root_id == root_id or\
+                            WPMessage.ID == root_id)
+        result = sql_query(WPMessage, filter_condition).\
+            order_by(WPMessage.message_date). \
+            offset(page_size * page_index).\
+            limit(page_size)
+        if result.count() == 0:
+            return []
+        return result.all()
 
     @classmethod
     def get_user_id(cls, user_id: str, page_index, page_size):
-        filter_condition = (WPMessage.user_id == user_id or WPMessage.message_answer_id is None)
-        return sql_query(WPMessage, filter_condition).order_by(WPMessage.message_date).\
-                    order_by(desc(WPMessage.message_date)). \
-                    offset(page_size * page_index).limit(page_size)
+        filter_condition = (WPMessage.user_id == user_id or \
+                            WPMessage.message_answer_id is None)
+        result = sql_query(WPMessage, filter_condition).\
+            order_by(desc(WPMessage.message_date)). \
+            offset(page_size * page_index).\
+            limit(page_size)
+        if result.count() == 0:
+            return []
+        return result.all()
     
     @classmethod
     def get_message_id(cls, message_id: str):
         filter_condition = (WPMessage.ID == message_id)
-        return sql_query(WPMessage, filter_condition)
-
-
-    @classmethod
-    def get_first_user_id(cls, user_id: str):
-        filter_condition = (WPMessage.user_id == user_id)
-        return sql_query(WPMessage, filter_condition). \
-                    order_by(desc(WPMessage.message_date))
+        result = sql_query(WPMessage, filter_condition)
+        if result.count() == 0:
+            return None
+        return result.first()

@@ -3,11 +3,9 @@ from aiogram import Bot
 from aiogram.enums import ParseMode
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt
-from core.domain.entity.WPUser import WPUser
-from core.domain.entity.WPMessage import WPMessage
-from core.domain.entity.WPMessageMeta import WPMessageMeta, MESSAGE_BOT_ID, MESSAGE_ID, CHAT_ID
+from core.domain.entity import WPUser, WPMessage, WPMessageMeta
 from core.domain.schema.SMessage import SMessage
-from ..validators.common import DataExistValidator, IsStr, IsInt, PageValidator
+from api.validators.common import DataExistValidator, IsStr, IsInt, PageValidator
 
 from config.telegram_config import TelegramConfig
 
@@ -108,13 +106,13 @@ def post_employee_message():
     DataExistValidator(
         {
             "text": IsStr(),
-            MESSAGE_ID: IsInt(),
-            MESSAGE_BOT_ID: IsInt(),
-            CHAT_ID: IsInt(),
+            WPMessageMeta.MESSAGE_ID: IsInt(),
+            WPMessageMeta.MESSAGE_BOT_ID: IsInt(),
+            WPMessageMeta.CHAT_ID: IsInt(),
         }
     ).validate_exist(**data)
 
-    message_meta: WPMessageMeta = WPMessageMeta.get_by_message_tg_id(data[MESSAGE_BOT_ID]).first()
+    message_meta: WPMessageMeta = WPMessageMeta.get_by_message_tg_id(data[WPMessageMeta.MESSAGE_BOT_ID]).first()
     message: WPMessage = WPMessage(
         data["text"],
         get_jwt()["sub"]["user_id"],
@@ -122,13 +120,13 @@ def post_employee_message():
     )
     message.save()
 
-    save_message_meta(CHAT_ID, data[CHAT_ID])
-    save_message_meta(MESSAGE_ID, data[MESSAGE_ID])
+    save_message_meta(WPMessageMeta.CHAT_ID, data[WPMessageMeta.CHAT_ID])
+    save_message_meta(WPMessageMeta.MESSAGE_ID, data[WPMessageMeta.MESSAGE_ID])
 
 
     if WPMessageMeta.get(message_id=message_meta.message_id).count() == 3:
         save_message_meta(
-            MESSAGE_BOT_ID,
+            WPMessageMeta.MESSAGE_BOT_ID,
             asyncio.run(
                 send_message(
                     text=message.message_text, 
@@ -143,16 +141,17 @@ def post_employee_message():
 def post_user_message():
     data = request.get_json()
     message: WPMessage = None
+    chat_id = TelegramConfig.GROUP_ID
     answer_id = None
     DataExistValidator({"text": IsStr()}).validate_exist(**data)
 
-    if data.get(MESSAGE_BOT_ID) is None:
+    if data.get(WPMessageMeta.MESSAGE_BOT_ID) is None:
         message: WPMessage = WPMessage(
             text=data["text"],
             user_id=get_jwt()["sub"]["user_id"]
         )
     else:
-        message_meta = WPMessageMeta.get_by_message_tg_id(data[MESSAGE_BOT_ID])
+        message_meta = WPMessageMeta.get_by_message_tg_id(data[WPMessageMeta.MESSAGE_BOT_ID])
         message: WPMessage = WPMessage(
             text=data["text"],
             user_id=get_jwt()["sub"]["user_id"],
@@ -163,15 +162,15 @@ def post_user_message():
         answer_id = (message_meta.count() == 0 if None else int(message_meta.first().message_meta_value))    
         
     message.save()
-    if data.get(CHAT_ID) is not None and data.get(MESSAGE_ID) is not None:
-        save_message_meta(CHAT_ID, data[CHAT_ID], message.ID)
-        save_message_meta(MESSAGE_ID, data[MESSAGE_ID], message.ID)
+    if data.get(WPMessageMeta.CHAT_ID) is not None and data.get(WPMessageMeta.MESSAGE_ID) is not None:
+        save_message_meta(WPMessageMeta.CHAT_ID, data[WPMessageMeta.CHAT_ID], message.ID)
+        save_message_meta(WPMessageMeta.MESSAGE_ID, data[WPMessageMeta.MESSAGE_ID], message.ID)
     save_message_meta(
-        MESSAGE_BOT_ID,
+        WPMessageMeta.MESSAGE_BOT_ID,
         asyncio.run(
             send_message(
                 text=message.message_text, 
-                chat_id=TelegramConfig.GROUP_ID,
+                chat_id=chat_id,
                 message_id=answer_id,
             )
         ), 

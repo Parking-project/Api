@@ -4,9 +4,8 @@ from core.domain.entity.WPUserMeta import WPUserMeta
 from core.domain.entity.WPTokenBlocList import WPTokenBlocList
 from core.domain.entity.WPAuthHistory import WPAuthHistory
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt
-from ...shared.global_exception import *
-from ..validators.common import NoneValidator, DataExistValidator, IsInt, IsStr
-from ..validators.user import UserValidator
+from api.shared.global_exception import *
+from api.validators import NoneValidator, DataExistValidator, IsInt, IsStr, UserValidator
 from datetime import timedelta
 
 blueprint = Blueprint('token', __name__, url_prefix="/token")

@@ -1,8 +1,9 @@
+from core.domain.interface import IWPReserve
+
 from extensions.databse_extension import sql_query, sql_add, sql_commit, sql_delete
-from ..interface import IWPReserve
-from ..enum import ReserveStatus
-from sqlalchemy import desc
 from uuid import uuid4
+
+from core.domain.enum import ReserveStatus
 
 class WPReserve(IWPReserve):
     def __init__(self, **kwargs):

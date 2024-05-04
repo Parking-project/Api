@@ -1,5 +1,5 @@
-from ..interface import IWPDocument
-from .WPMessage import WPMessage
+from core.domain.interface import IWPDocument
+
 from extensions.databse_extension import sql_query, sql_add
 from uuid import uuid4
 
@@ -20,4 +20,7 @@ class WPDocument(IWPDocument):
     @classmethod
     def get_message_id(cls, message_id: str):
         filter_condition = (WPDocument.message_id == message_id)
-        return sql_query(WPDocument, filter_condition)
+        result = sql_query(WPDocument, filter_condition)
+        if result.count() == 0:
+            return []
+        return result.all()

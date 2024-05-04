@@ -1,6 +1,5 @@
 from werkzeug.exceptions import HTTPException
 
-
 class CustomError(HTTPException):
     """ Custom Error Exception """
     code = 401

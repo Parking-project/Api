@@ -1,4 +1,4 @@
-from ...shared.global_exception import *
+from api.shared.global_exception import *
 from core.domain.entity.WPUser import WPUser
 
 class UserValidator:

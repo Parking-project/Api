@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required
 from core.domain.entity.WPPlace import WPPlace
 from core.domain.schema.SPlace import SPlace
-from ..validators.common import DataExistValidator, IsStr, IsInt, PageValidator
+from api.validators.common import DataExistValidator, IsStr, IsInt, PageValidator
 
 blueprint = Blueprint('place', __name__, url_prefix="/place")
 
