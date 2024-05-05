@@ -25,16 +25,16 @@ def sql_commit():
     try:
         session.commit()
         session.close()
-    except:
-        raise ConnectionError("sql_commit")
+    except Exception as ex:
+        raise ConnectionError(f"sql_commit - {ex}")
 
 # Добавляет запись
 def sql_add(data):
     try:
         session.add(data)
         sql_commit()
-    except:
-        raise ConnectionError("sql_add")
+    except Exception as ex:
+        raise ConnectionError(f"sql_add - {ex}")
 
 # Удаляет запись
 def sql_delete(data):
