@@ -49,9 +49,12 @@ class WPUser(IWPUser):
     def save(self):
         sql_add(self)
     
+    def is_user(self):
+        return WPRole.USER_NAME == self.role_id
+
     @classmethod
     def authenticate(cls, **kwargs):
-        user: WPUser = WPUser.get_login(kwargs.get("login")).first()
+        user: WPUser = WPUser.get_login(kwargs.get("login"))
         if user is None:
             return None
         password = kwargs["password"]
@@ -78,5 +81,5 @@ class WPUser(IWPUser):
         filter_condition = (WPUser.user_login == login)
         result = sql_query(WPUser, filter_condition)
         if result.count() == 0:
-            return []
-        return result.all()
+            return None
+        return result.first()

@@ -11,6 +11,11 @@ class IWPMessage(Base):
     message_iterate = Column(Integer, nullable=False, default=0)
     message_is_end = Column(Boolean, nullable=False, default=0)
 
+    message_bot_chat_telegram_id = Column(BigInteger, nullable=True)
+    message_bot_telegram_id = Column(BigInteger, nullable=True)
+    message_chat_telegram_id = Column(BigInteger, nullable=True)
+    message_telegram_id = Column(BigInteger, nullable=True)
+
     user_id = Column(String(36),
                      ForeignKey('wp_user.ID'), nullable=True)
     message_root_id = Column(String(36),

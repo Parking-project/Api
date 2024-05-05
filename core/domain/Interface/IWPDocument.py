@@ -7,9 +7,9 @@ class IWPDocument(Base):
     __tablename__ = 'wp_document'
 
     ID = Column(String(36), primary_key=True)
-    # document_file_id = Column(String(100), nullable=True)
-    # document_file_unique_id = Column(String(100), nullable=True)
-    # document_file_size = Column(BigInteger, nullable=False)
+    document_file_id = Column(String(100), nullable=True)
+    document_file_unique_id = Column(String(100), nullable=True)
+    document_file_size = Column(BigInteger, nullable=False)
     document_file_url = Column(Text, nullable=True)
     document_file_mime = Column(Text, nullable=True)
 

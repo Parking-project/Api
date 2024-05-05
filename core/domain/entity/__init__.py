@@ -2,7 +2,7 @@ __all__ = (
     "WPAuthHistory",
     "WPDocument",
     "WPMessage",
-    "WPMessageMeta",
+    # "WPMessageMeta",
     "WPPlace",
     "WPReserve",
     "WPReserveHistory",
@@ -15,7 +15,7 @@ __all__ = (
 from .WPAuthHistory import WPAuthHistory
 from .WPDocument import WPDocument
 from .WPMessage import WPMessage
-from .WPMessageMeta import WPMessageMeta
+# from .WPMessageMeta import WPMessageMeta
 from .WPPlace import WPPlace
 from .WPReserve import WPReserve
 from .WPReserveHistory import WPReserveHistory

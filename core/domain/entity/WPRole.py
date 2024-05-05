@@ -10,7 +10,8 @@ class WPRole(IWPRole):
     
     @classmethod
     def get(cls):
-        return sql_query(WPRole, (True))
+        result = sql_query(WPRole, (True))
+        return result.all()
 
     @classmethod
     def get_id(cls, role_id: str):

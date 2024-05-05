@@ -1,14 +1,15 @@
 from core.domain.interface import IWPDocument
 
 from extensions.databse_extension import sql_query, sql_add
+from config.telegram_config import TelegramConfig
 from uuid import uuid4
 
 class WPDocument(IWPDocument):
     def __init__(self, message_id: str, **kwargs):
         self.ID = uuid4()
-        # self.document_file_id = kwargs.get('document_file_id')
-        # self.document_file_unique_id = kwargs.get('document_file_unique_id')
-        # self.document_file_size = kwargs.get('document_file_size')
+        self.document_file_id = kwargs.get('document_file_id')
+        self.document_file_unique_id = kwargs.get('document_file_unique_id')
+        self.document_file_size = kwargs.get('document_file_size')
         self.document_file_url = kwargs.get('document_file_url')
         self.document_file_mime = kwargs.get('document_file_mime')
         
