@@ -1,8 +1,5 @@
 from flask import Blueprint, jsonify, request
-from core.domain.entity.WPUser import WPUser
-from core.domain.entity.WPUserMeta import WPUserMeta
-from core.domain.entity.WPTokenBlocList import WPTokenBlocList
-from core.domain.entity.WPAuthHistory import WPAuthHistory
+from core.domain.entity import WPRole, WPUser, WPUserMeta, WPTokenBlocList, WPAuthHistory
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt
 from api.shared.global_exception import *
 from api.validators import NoneValidator, DataExistValidator, IsInt, IsStr, UserValidator
@@ -28,7 +25,8 @@ def login():
     return jsonify(
         {
             "message": "Авторизация прошла успешно",
-            "tokens": tokens
+            "tokens": tokens,
+            "role": WPRole.get_id(user.role_id).role_name
         }
     )
 
@@ -74,7 +72,10 @@ def logout():
 
     jti = jwt['jti']
     token_type = jwt['type']
-    WPUserMeta.get_user_id(user_id=jwt["sub"]["user_id"]).delete()
+    NoneValidator.validate(
+        key="user_telegram id",
+        value=WPUserMeta.get_user_id(user_id=jwt["sub"]["user_id"])
+    ).delete()
     token_b = WPTokenBlocList(jti=jti)
 
     token_b.save()

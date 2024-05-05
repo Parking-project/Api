@@ -13,5 +13,5 @@ class UserValidator:
         
     @classmethod
     def validate_unique(cls, login: str):
-        if WPUser.get_login(login).count() > 0:
+        if WPUser.get_login(login) is not None:
             raise UniqueError("Логин")

@@ -13,7 +13,7 @@ def get_reserve_history():
     JwtValidator.validate(get_jwt(), {WPRole.ADMIN_NAME})
     data = request.get_json()
     page_index, page_size = PageValidator.validate(**data)
-    result = SReserveHistory().dump(WPReserveHistory.get(page_index, page_size).all(), many=True)
+    result = SReserveHistory().dump(WPReserveHistory.get(page_index, page_size), many=True)
     return jsonify(
         {
             "data": result

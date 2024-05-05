@@ -13,7 +13,7 @@ def get_bloc_tokens():
     JwtValidator.validate(get_jwt(), {WPRole.ADMIN_NAME})
     data = request.get_json()
     page_index, page_size = PageValidator.validate(**data)
-    result = STokenBlocList().dump(WPTokenBlocList.get(page_index, page_size).all(), many=True)
+    result = STokenBlocList().dump(WPTokenBlocList.get(page_index, page_size), many=True)
     return jsonify(
         {
             "data": result

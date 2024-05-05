@@ -17,7 +17,7 @@ def get_places_by_prefix():
     ).validate_exist(**data)
     page_index, page_size = PageValidator.validate(**data)
     result = SPlace().dump(
-        WPPlace.get_place_prefix(data.get("place_prefix"), page_index, page_size).all(), many=True
+        WPPlace.get_place_prefix(data.get("place_prefix"), page_index, page_size), many=True
     )
     return jsonify(
         {
@@ -35,7 +35,7 @@ def get_place_by_code():
         }
     ).validate_exist(**data)
     result = SPlace().dump(
-        WPPlace.get_place_prefix(data.get("place_prefix")).all(), many=True
+        WPPlace.get_place_prefix(data.get("place_prefix")), many=True
     )
     return jsonify(
         {
@@ -54,7 +54,7 @@ def get_free_places():
     ).validate_exist(**data)
     page_index, page_size = PageValidator.validate(**data)
     result = SPlace().dump(
-        WPPlace.get_place_prefix(data.get("hours"), page_index, page_size).all(), many=True
+        WPPlace.get_place_prefix(data.get("hours"), page_index, page_size), many=True
     )
     return jsonify(
         {

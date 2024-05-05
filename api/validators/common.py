@@ -14,8 +14,8 @@ class JwtValidator:
     @classmethod
     def validate(cls, jwt, role_names: list[str]):
         role_names = list[str](role_names)
-        user = WPUser.get_user_id(jwt["sub"]["user_id"]).first()
-        role = WPRole.get_id(jwt["sub"]["role_id"]).first()
+        user = WPUser.get_user_id(jwt["sub"]["user_id"])
+        role = WPRole.get_id(jwt["sub"]["role_id"])
         if user is not None and role is not None:
             if role_names.count(role.role_name):
                 return
