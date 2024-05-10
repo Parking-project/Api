@@ -37,7 +37,7 @@ def get_messages_by_root():
     ).validate_exist(**data)
     page_index, page_size = PageValidator.validate(**data)
     result = SMessage().dump(
-        WPMessage.get_message_id(data.get("root_id"), page_index, page_size), many=True
+        WPMessage.get_root_id(data["root_id"], page_index, page_size), many=True
     )
     return jsonify(
         {
@@ -56,7 +56,7 @@ def get_messages_by_user():
     ).validate_exist(**data)
     page_index, page_size = PageValidator.validate(**data)
     result = SMessage().dump(
-        WPMessage.get_message_id(data.get("user_id"), page_index, page_size), many=True
+        WPMessage.get_message_id(data["user_id"], page_index, page_size), many=True
     )
     return jsonify(
         {
@@ -74,7 +74,7 @@ def get_message_by_message_id():
         }
     ).validate_exist(**data)
     result = SMessage().dump(
-        WPMessage.get_message_id(data.get("message_id")), many=True
+        WPMessage.get_message_id(data["message_id"]), many=True
     )
     return jsonify(
         {
@@ -83,57 +83,17 @@ def get_message_by_message_id():
     ), 200
 
 
-async def send_message(text: str, chat_id: int, message_tg_id: int):
-    bot = Bot(token=TelegramConfig.TOKEN_API, parse_mode=ParseMode.HTML)
-    bot_message = await bot.send_message(
-        chat_id=chat_id,
-        reply_to_message_id=message_tg_id,
-        text=text,
-        parse_mode=ParseMode.MARKDOWN_V2,
-    )
-    return bot_message.message_id
-
-# @blueprint.post("/post_group")
-# @jwt_required()
-# def post_employee_message():
-#     data = request.get_json()
-#     DataExistValidator(
-#         {
-#             "text": IsStr(),
-#             WPMessageMeta.MESSAGE_ID: IsInt(),
-#             WPMessageMeta.MESSAGE_BOT_ID: IsInt(),
-#             WPMessageMeta.CHAT_ID: IsInt(),
-#         }
-#     ).validate_exist(**data)
-
-#     message_meta: WPMessageMeta = WPMessageMeta.get_by_message_tg_id(data[WPMessageMeta.MESSAGE_BOT_ID])
-#     message: WPMessage = WPMessage(
-#         data["text"],
-#         get_jwt()["sub"]["user_id"],
-#         message_meta.message_id
-#     )
-#     message.save()
-
-#     save_message_meta(WPMessageMeta.CHAT_ID, data[WPMessageMeta.CHAT_ID])
-#     save_message_meta(WPMessageMeta.MESSAGE_ID, data[WPMessageMeta.MESSAGE_ID])
-
-
-#     if WPMessageMeta.get(message_id=message_meta.message_id).count() == 3:
-#         save_message_meta(
-#             WPMessageMeta.MESSAGE_BOT_ID,
-#             asyncio.run(
-#                 send_message(
-#                     text=message.message_text, 
-#                     chat_id=int(WPMessageMeta.get_group_id(message_meta.message_id).first().message_meta_value),
-#                     message_id=int(WPMessageMeta.get_message_id(message_meta.message_id).first().message_meta_value),
-#                 )
-#             )
-#         )
-
 @blueprint.post("/post")
 @jwt_required()
-def post_user_message():
+def post_message():
     data = request.get_json()
+
+    DataExistValidator(
+        {
+            "text": IsStr() 
+        }
+    ).validate_exist(**data)
+
     message: WPMessage = None
     message_prev: WPMessage = None
     chat_id = TelegramConfig.GROUP_ID
@@ -156,26 +116,32 @@ def post_user_message():
             user_id=get_jwt()["sub"]["user_id"],
             chat_id=data.get(WPMessage.CHAT_ID),
             message_tg_id=data.get(WPMessage.MESSAGE_ID),
-            answer_message_id=(message_prev is None if None else message.ID)
+            answer_message_id=message_prev.ID
         )
         
-        chat_id = message.message_chat_telegram_id
-        message_tg_id = message.message_telegram_id  
+        chat_id = message_prev.message_chat_telegram_id
+        message_tg_id = message_prev.message_telegram_id  
 
-    if message.message_answer_id is None or \
-       (message_prev is not None and message_prev.is_can_reply()):
+
+    if message.message_answer_id is None or (message_prev is not None and message_prev.is_can_reply()):
         text: str = ""
         user: WPUser = WPUser.get_user_id(message.user_id)
-        if user is not None and not user.is_user():
-            text = f"От: `{user.user_display_name}`\n"
-        text += f"Текст: {message.message_text}"
+        if user is not None and user.is_user():
+            text = f"От: `{user.user_display_name}`\nТекст: "
+        text += f"{message.message_text}"
+        
+        async def send_message():
+            bot = Bot(token=TelegramConfig.TOKEN_API, parse_mode=ParseMode.HTML)
+            bot_message = await bot.send_message(
+                chat_id=chat_id,
+                reply_to_message_id=message_tg_id,
+                text=text,
+                parse_mode=ParseMode.MARKDOWN_V2,
+            )
+            return bot_message.message_id
         message.set_bot_data(
             message_tg_id=asyncio.run(
-                send_message(
-                    text=text, 
-                    chat_id=chat_id,
-                    message_tg_id=message_tg_id,
-                )
+                send_message()
             ),
             chat_id=chat_id
         )
@@ -183,8 +149,7 @@ def post_user_message():
         
     return jsonify(
         {
-            "data": "Сообщение сохранено",
-            "message_id": message.ID
+            "data": message.ID,
         }
     ), 200
 

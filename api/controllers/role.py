@@ -6,7 +6,7 @@ from api.validators.common import JwtValidator
 
 blueprint = Blueprint('role', __name__, url_prefix="/role")
 
-@blueprint.get('/')
+@blueprint.get('/get')
 @jwt_required()
 def get_roles():
     JwtValidator.validate(get_jwt(), WPRole.ADMIN_NAME)

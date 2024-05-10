@@ -4,6 +4,7 @@ from core.domain.entity.WPAuthHistory import WPAuthHistory
 from core.domain.schema.SAuthHistory import SAuthHistory
 from core.domain.entity import WPRole
 from api.validators.common import JwtValidator, PageValidator
+from .base_func import create_dict
 
 blueprint = Blueprint('auth', __name__, url_prefix="/auth")
 
@@ -13,7 +14,11 @@ def get_auth_history():
     JwtValidator.validate(get_jwt(), {WPRole.ADMIN_NAME})
     data = request.get_json()
     page_index, page_size = PageValidator.validate(**data)
-    result = SAuthHistory().dump(WPAuthHistory.get(page_index, page_size), many=True)
+    auth = WPAuthHistory.get(page_index, page_size)
+    result = SAuthHistory().dump(
+        [oba.__dict__ for oba in auth],
+        many=True
+    )
     return jsonify(
         {
             "data": result
