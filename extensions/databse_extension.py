@@ -1,6 +1,5 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
-from sqlalchemy import BooleanClauseList
 from sqlalchemy.orm import Query
 
 from config.database_config import DatabaseConfig
@@ -44,11 +43,20 @@ def sql_delete(data):
     except:
         raise ConnectionError("sql_delete")
 
-# Получения записей
-def sql_query(class_example, filter_condition: BooleanClauseList) -> Query:
+def sql_query1(cls1):
     try:
-        query_result = session.query(class_example).filter(filter_condition)
+        return session.query(cls1)
+    except Exception as ex:
+        raise ConnectionError(f"sql_query: ({ex})")
+    
+# Получения записей
+def sql_query(cls, filter_condition, inner_class=None, inner_condition=None):
+    try:
+        query = session.query(*cls)
+        if inner_condition is not None and inner_class is not None:
+            query = query.join(inner_class, inner_condition, isouter=True)
+        query = query.filter(filter_condition)
         session.close()
-        return query_result
-    except:
-        raise ConnectionError("sql_query")
+        return query
+    except Exception as ex:
+        raise ConnectionError(f"sql_query: ({ex})")
