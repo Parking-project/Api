@@ -1,10 +1,8 @@
 from marshmallow import fields, Schema
 
 class SReserve(Schema):
-    ID = fields.String()
-    reserve_begin = fields.Integer()
-    reserve_end = fields.Integer()
-    reserve_state = fields.Integer()
-
-    place_id = fields.String()
-    user_id = fields.String()
+    ID = fields.String(required=True)
+    reserve_begin = fields.Integer(required=True)
+    reserve_end = fields.Integer(required=True)
+    
+    place_code = fields.String(required=False)
