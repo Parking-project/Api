@@ -1,7 +1,7 @@
-from enum import Enum
+from enum import IntEnum, auto
 
-class ReserveStatus(Enum):
-    DELETED = 0
-    SENDED = 1
-    APPROVE = 2
-    PAYED = 3
+class ReserveStatus(IntEnum):
+    DELETED = auto()
+    SENDED = auto()
+    APPROVE = auto()
+    PAYED = auto()
