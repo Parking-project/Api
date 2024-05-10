@@ -1,5 +1,5 @@
 from extensions.databse_extension import Base
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, String, Integer, BigInteger
 from abc import abstractmethod
 
 class IWPReserveHistory(Base):
@@ -8,6 +8,8 @@ class IWPReserveHistory(Base):
     ID = Column(String(36), primary_key=True)
     reserve_id = Column(String(36), nullable=False)
     reserve_state = Column(Integer, nullable=False, default=0)
+
+    reserve_create = Column(BigInteger, nullable=False)
 
     @classmethod
     @abstractmethod

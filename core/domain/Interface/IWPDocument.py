@@ -18,7 +18,7 @@ class IWPDocument(Base):
     message = relationship("WPMessage", backref="documents")
 
     @abstractmethod
-    def __init__(self, **kwargs):
+    def __init__(self, message_id: str, **kwargs):
         pass
 
     @abstractmethod

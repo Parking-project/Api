@@ -20,13 +20,13 @@ class IWPUser(Base):
         pass
 
     @abstractmethod
-    def set_password(self, password):
+    def set_password(self, password: str):
         pass
-
+    
     @abstractmethod
     def update(self, display_name, role_id):
         pass
-    
+
     @abstractmethod
     def get_tokens(self, expire_time=24):
         pass
@@ -35,9 +35,13 @@ class IWPUser(Base):
     def save(self):
         pass
     
+    @abstractmethod
+    def is_user(self):
+        pass
+
     @classmethod
     @abstractmethod
-    def authenticate(cls, login: str, password: str):
+    def authenticate(cls, **kwargs):
         pass
     
     @classmethod
@@ -49,3 +53,4 @@ class IWPUser(Base):
     @abstractmethod
     def get_login(cls, login: str):
         pass
+    

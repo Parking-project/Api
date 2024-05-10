@@ -24,7 +24,15 @@ class IWPMessage(Base):
                                ForeignKey('wp_message.ID'), nullable=True)
     
     @abstractmethod
-    def __init__(self, **kwargs):
+    def __init__(self, text: str, user_id: str, chat_id, message_tg_id, answer_message_id: int = None):
+        pass
+
+    @abstractmethod
+    def set_bot_data(self, message_tg_id, chat_id):
+        pass
+
+    @abstractmethod
+    def is_can_reply(self):
         pass
 
     @abstractmethod
@@ -40,7 +48,7 @@ class IWPMessage(Base):
     @abstractmethod
     def get_root_id(cls, root_id: str, page_index, page_size):
         pass
-    
+
     @classmethod
     @abstractmethod
     def get_user_id(cls, user_id: str, page_index, page_size):
@@ -48,5 +56,15 @@ class IWPMessage(Base):
     
     @classmethod
     @abstractmethod
-    def get_message_id(cls, message_id: str, is_bot: bool = True):
+    def get_last_user_id(cls, user_id: str):
+        pass
+    
+    @classmethod
+    @abstractmethod
+    def get_message_id(cls, message_id: str):
+        pass
+
+    @classmethod
+    @abstractmethod
+    def get_message_bot_tg_id(cls, message_bot_id: int):
         pass

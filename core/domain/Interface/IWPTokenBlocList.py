@@ -19,5 +19,10 @@ class IWPTokenBlocList(Base):
 
     @classmethod
     @abstractmethod
+    def get(cls, page_index, page_size):
+        pass
+
+    @classmethod
+    @abstractmethod
     def get_jti(cls, jti):
         pass

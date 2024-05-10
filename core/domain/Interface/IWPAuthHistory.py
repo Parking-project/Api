@@ -7,8 +7,8 @@ class IWPAuthHistory(Base):
 
     ID = Column(String(36), primary_key=True)
     auth_date = Column(BigInteger, nullable=False)
-    user_id = Column(String(36),
-                     ForeignKey('wp_user.ID'), nullable=False)
+    user_id = Column(String(36), nullable=False)
+    user_name = Column(String(36), nullable=False)
 
     @abstractmethod
     def __init__(self, **kwargs):

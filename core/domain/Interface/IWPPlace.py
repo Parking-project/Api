@@ -33,5 +33,5 @@ class IWPPlace(Base):
 
     @classmethod
     @abstractmethod
-    def get_free(cls, hours: int, page_index, page_size):
+    def get_free(cls, reserve_list, page_index, page_size):
         pass
