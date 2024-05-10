@@ -1,7 +1,5 @@
 from api.shared import PageError, DataError, SecurityError
-from core.domain.entity import WPUser
 from core.domain.entity import WPRole
-
 
 class NoneValidator:
     @classmethod
@@ -13,12 +11,9 @@ class NoneValidator:
 class JwtValidator:
     @classmethod
     def validate(cls, jwt, role_names: list[str]):
-        role_names = list[str](role_names)
-        user = WPUser.get_user_id(jwt["sub"]["user_id"])
-        role = WPRole.get_id(jwt["sub"]["role_id"])
-        if user is not None and role is not None:
-            if role_names.count(role.role_name):
-                return
+        role: WPRole = WPRole.get_id(jwt["sub"]["role_id"])
+        if role.role_name in role_names:
+            return
         raise SecurityError()
 
 class PageValidator:
@@ -56,7 +51,10 @@ class IsBool:
         if isinstance(data, bool):
             return
         raise DataError(f"{data} не является bool")
-    
+   
+class IsExist:
+    def check(self, data):
+        return
 
 class DataExistValidator:
     key_exist: dict
