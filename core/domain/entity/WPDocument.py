@@ -1,8 +1,8 @@
 from core.domain.interface import IWPDocument
 
-from extensions.databse_extension import sql_query, sql_add
-from config.telegram_config import TelegramConfig
 from uuid import uuid4
+
+from extensions.databse_extension import sql_query, sql_add
 
 class WPDocument(IWPDocument):
     def __init__(self, message_id: str, **kwargs):
@@ -20,8 +20,12 @@ class WPDocument(IWPDocument):
 
     @classmethod
     def get_message_id(cls, message_id: str):
+        select_classes = (WPDocument,)
         filter_condition = (WPDocument.message_id == message_id)
-        result = sql_query(WPDocument, filter_condition)
+        result = sql_query(
+            select_classes,
+            filter_condition
+        )
         if result.count() == 0:
             return []
         return result.all()

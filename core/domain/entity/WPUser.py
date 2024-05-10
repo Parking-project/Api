@@ -1,12 +1,13 @@
 from core.domain.interface import IWPUser
 
-from core.domain.entity import WPRole
-from extensions.databse_extension import sql_query, sql_add, sql_commit
 from flask_jwt_extended import create_access_token, create_refresh_token
 from datetime import datetime, timedelta
 from uuid import uuid4
 import hashlib
 import os
+
+from core.domain.entity import WPRole
+from extensions.databse_extension import sql_query, sql_add, sql_commit
 
 class WPUser(IWPUser):
     def __init__(self, **kwargs):
@@ -50,7 +51,7 @@ class WPUser(IWPUser):
         sql_add(self)
     
     def is_user(self):
-        return WPRole.USER_NAME == self.role_id
+        return WPRole.USER_NAME == WPRole.get_id(self.role_id).role_name
 
     @classmethod
     def authenticate(cls, **kwargs):
@@ -70,16 +71,24 @@ class WPUser(IWPUser):
     
     @classmethod
     def get_user_id(cls, user_id: str):
+        select_classes = (WPUser,)
         filter_condition = (WPUser.ID == user_id)
-        result = sql_query(WPUser, filter_condition)
+        result = sql_query(
+            select_classes,
+            filter_condition
+        )
         if result.count() == 0:
             return None
         return result.first()
     
     @classmethod
     def get_login(cls, login: str):
+        select_classes = (WPUser,)
         filter_condition = (WPUser.user_login == login)
-        result = sql_query(WPUser, filter_condition)
+        result = sql_query(
+            select_classes,
+            filter_condition
+        )
         if result.count() == 0:
             return None
         return result.first()
