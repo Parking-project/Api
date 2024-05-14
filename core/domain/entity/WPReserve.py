@@ -59,13 +59,14 @@ class WPReserve(IWPReserve):
 
     @classmethod
     def get_actual_state(cls, user_id: str, states: list[int], page_index, page_size):
-        select_classes = (WPReserve, WPPlace)
+        select_classes = (WPPlace, WPReserve)
         inner_class = WPPlace
         inner_condition = (WPReserve.place_id == WPPlace.ID)
         filter_condition = and_(
             WPReserve.reserve_state.in_(states),
             WPReserve.user_id == user_id,
-            WPReserve.reserve_end >= int(datetime.now().timestamp())
+            # WPReserve.reserve_end >= int(datetime.now().timestamp()
+            # )
         )
         result = sql_query(
             cls=select_classes,
@@ -82,13 +83,32 @@ class WPReserve(IWPReserve):
 
     @classmethod
     def get_state(cls, user_id: str, states: list, page_index, page_size):
-        select_classes = (WPReserve, WPPlace)
+        select_classes = (WPPlace, WPReserve)
         inner_class = WPPlace
         inner_condition = (WPReserve.place_id == WPPlace.ID)
         filter_condition = and_(
             WPReserve.reserve_state.in_([1,2]),
             WPReserve.user_id == user_id
         )
+        result = sql_query(
+            cls=select_classes,
+            filter_condition=filter_condition,
+            inner_class=inner_class,
+            inner_condition=inner_condition
+        ).\
+            order_by(desc(WPReserve.reserve_create)).\
+            offset(page_size * page_index).\
+            limit(page_size)
+        if result.count() == 0:
+            return []
+        return result.all()
+
+    @classmethod
+    def get(cls, page_index, page_size):
+        select_classes = (WPPlace, WPReserve)
+        inner_class = WPPlace
+        inner_condition = (WPReserve.place_id == WPPlace.ID)
+        filter_condition = (True)
         result = sql_query(
             cls=select_classes,
             filter_condition=filter_condition,

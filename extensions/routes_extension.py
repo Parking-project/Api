@@ -1,4 +1,5 @@
-from flask import Flask
+from flask import Flask, request, Response
+from flask_cors import CORS
 from api.controllers import (
     auth_bp,
     document_bp,
@@ -26,4 +27,11 @@ def register_routes(app: Flask):
     app.register_blueprint(token_bloc_list_bp)
     app.register_blueprint(token_bp)
     app.register_blueprint(user_bp)
+    CORS(app)
+    @app.before_request
+    def handle_preflight():
+        if request.method == "OPTIONS":
+            res = Response()
+            res.headers['X-Content-Type-Options'] = '*'
+            return res
     pass

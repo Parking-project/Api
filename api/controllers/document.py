@@ -34,6 +34,16 @@ def get_documents_by_message_id():
         }
     ), 200
 
+@blueprint.get('/get_all')
+# @jwt_required()
+def get_documents():
+    result = SDocument().dump(WPDocument.get_all(), many=True)
+    return jsonify(
+        {
+            "documents": result
+        }
+    ), 200
+
 
 @blueprint.post('/post')
 @jwt_required()

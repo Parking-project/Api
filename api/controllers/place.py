@@ -44,7 +44,7 @@ def get_place_by_code():
         }
     ), 200
 
-@blueprint.get('/get_free_id')
+@blueprint.post('/get_free_id')
 @jwt_required()
 def get_free_id_places():
     data = request.get_json()

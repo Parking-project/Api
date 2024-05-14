@@ -16,7 +16,7 @@ class WPUser(IWPUser):
         self.set_password(kwargs.get('password'))
         self.user_registered = datetime.now().timestamp()
         self.user_display_name = kwargs.get('display_name')
-        self.role_id = WPRole.get_name(WPRole.USER_NAME).first().ID
+        self.role_id = WPRole.get_name(WPRole.USER_NAME).ID
 
     def set_password(self, password: str):
         salt = os.urandom(16)
@@ -52,6 +52,30 @@ class WPUser(IWPUser):
     
     def is_user(self):
         return WPRole.USER_NAME == WPRole.get_id(self.role_id).role_name
+
+    @classmethod
+    def get(cls, user_id: str):
+        select_classes = (WPUser,)
+        filter_condition = (WPUser.ID == user_id)
+        result = sql_query(
+            select_classes,
+            filter_condition
+        )
+        if result.count() == 0:
+            return None
+        return result.first()
+    
+    @classmethod
+    def get_all(cls):
+        select_classes = (WPUser,)
+        filter_condition = ()
+        result = sql_query(
+            select_classes,
+            filter_condition
+        )
+        if result.count() == 0:
+            return []
+        return result.all()
 
     @classmethod
     def authenticate(cls, **kwargs):

@@ -29,3 +29,15 @@ class WPDocument(IWPDocument):
         if result.count() == 0:
             return []
         return result.all()
+
+    @classmethod
+    def get_all(cls):
+        select_classes = (WPDocument,)
+        filter_condition = (True)
+        result = sql_query(
+            select_classes,
+            filter_condition
+        )
+        if result.count() == 0:
+            return []
+        return result.all()

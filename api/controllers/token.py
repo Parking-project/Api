@@ -24,6 +24,7 @@ def log_out(jwt: dict):
 @blueprint.post('/login')
 def login():
     data = request.get_json()
+
     DataExistValidator(
         {
             "login": IsStr(),
@@ -55,7 +56,7 @@ def register():
         
     user = WPUser(**data)
     user.save()
-    sign_in(user.ID)
+    sign_in(user.ID, user_name=user.user_display_name)
     return jsonify(
         {
             "message": "Регистрация прошла успешно",
@@ -63,6 +64,7 @@ def register():
             "role": WPRole.get_id(user.role_id).role_name
         }
     ), 200
+
 
 @blueprint.get('/check_connection')
 def check_connection():
@@ -78,13 +80,15 @@ def check_connection():
 def refresh_access():
     JwtValidator.validate(get_jwt(), {WPRole.ADMIN_NAME, WPRole.USER_NAME, WPRole.EMPLOYEE_NAME})
     
-    user: WPUser = WPUser.get_user_id(user_id=get_jwt()["sub"]["user_id"])
+    jwt_identity = get_jwt_identity()
+    new_access = create_access_token(identity=jwt_identity)
     
-    log_out(get_jwt())
     return jsonify(
         {
             "message": "Авторизация прошла успешно",
-            "tokens": user.get_tokens(),
+            "tokens": {
+                "access": new_access,
+            },
             "role": WPRole.get_id(get_jwt()["sub"]["role_id"]).role_name
         }
     )

@@ -14,11 +14,23 @@ blueprint = Blueprint('message', __name__, url_prefix="/message")
 
 @blueprint.get('/get')
 @jwt_required()
-def get_messages():
+def get():
     data = request.get_json()
     page_index, page_size = PageValidator.validate(**data)
     result = SMessage().dump(
         WPMessage.get_message_id(page_index, page_size), many=True
+    )
+    return jsonify(
+        {
+            "data": result
+        }
+    ), 200
+
+@blueprint.get('/get_all')
+# @jwt_required()
+def get_messages():
+    result = SMessage().dump(
+        WPMessage.get_all(), many=True
     )
     return jsonify(
         {

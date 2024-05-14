@@ -59,6 +59,19 @@ class WPMessage(IWPMessage):
         return result.all()
 
     @classmethod
+    def get_all(cls):
+        select_classes = (WPMessage,)
+        filter_condition = (True)
+        result = sql_query(
+            select_classes,
+            filter_condition
+        ).\
+            order_by(WPMessage.message_date)
+        if result.count() == 0:
+            return []
+        return result.all()
+
+    @classmethod
     def get_root_id(cls, root_id: str, page_index, page_size):
         select_classes = (WPMessage,)
         filter_condition = (WPMessage.message_root_id == root_id)

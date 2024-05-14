@@ -68,15 +68,38 @@ async def send_approve_request(reserve: WPReserve, chat_id: int|None = None, mes
     return approve_message.message_id
 
 async def delete_approve_message(message_id: int):
-    bot = Bot(token=TelegramConfig.TOKEN_API, parse_mode=ParseMode.HTML)
-    await bot.delete_message(
-        chat_id=TelegramConfig.RESERVETION_GROUP_ID,
-        message_id=message_id
+    try:
+        bot = Bot(token=TelegramConfig.TOKEN_API, parse_mode=ParseMode.HTML)
+        await bot.delete_message(
+            chat_id=TelegramConfig.RESERVETION_GROUP_ID,
+            message_id=message_id
+        )
+    except:
+        return
+
+@blueprint.get('/get')
+@jwt_required()
+def get_reserve():
+    data = request.get_json()
+    page_index, page_size = PageValidator.validate(**data)
+    
+    reserves = WPReserve.get(
+        page_index=page_index,
+        page_size=page_size
     )
+    result = SReserve().dump(
+        [create_dict(obr, obp) for obr, obp in reserves],
+        many=True
+    )
+    return jsonify(
+        {
+            "data": result
+        }
+    ), 200
 
 
 # region user get
-@blueprint.get('/get_state')
+@blueprint.post('/get_state')
 @jwt_required()
 def get_state_reserve():
     data = request.get_json()
